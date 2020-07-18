@@ -9,7 +9,7 @@ export default class GameScene extends Phaser.Scene {
 
 
       // player gravity
-      playerGravity: 900,
+      playerGravity: 0,
 
       // player friction when on wall
       playerGrip: 100,
@@ -52,21 +52,20 @@ export default class GameScene extends Phaser.Scene {
     this.hero = this.physics.add.sprite(260, 376, 'hero');
 
     // setting hero horizontal speed
-    this.hero.body.velocity.x = 100;
+    // this.hero.body.velocity.x = 100;
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // the hero can jump
-    this.canJump = true;
+    // this.canJump = true;
 
     // the hern cannot double jump
-    this.canDoubleJump = false;
+    // this.canDoubleJump = false;
 
     // the hero is not on the wall
-    this.onWall = false;
-
+    // this.onWall = false;
 
     // waiting for player input
-    this.input.on('pointerdown', this.handleJump, this);
+    // this.input.on('pointerdown', this.handleJump, this);
 
     // set workd bounds to allow camera to follow the player
     this.cameras.main.setBounds(0, 0, 1920, 1440);
@@ -80,9 +79,9 @@ export default class GameScene extends Phaser.Scene {
     // canJump is true AND the hero is on the ground (blocked.down)
     // OR
     // the hero is on the wall
-    if ((this.canJump && this.hero.body.blocked.down) || this.onWall) {
+    if ((this.canJump && this.hero.body.blocked.none) || this.onWall) {
       // applying jump force
-      this.hero.body.velocity.y = 600;
+      this.hero.body.velocity.y = -600;
       console.log(this.hero.body.velocity);
       // is the hero on a wall?
       if (this.onWall) {
@@ -117,9 +116,14 @@ export default class GameScene extends Phaser.Scene {
       this.hero.setVelocityX(0);
     }
 
+    if (this.cursors.up.isDown) {
+      // this.handleJump();
+      this.hero.setVelocityY(-160);
+    }
+
 
     // handling collision between the hero and the tiles
-    this.physics.world.collide(this.hero, this.layer, function (hero, layer) {
+    this.physics.world.collide(this.hero, this.layer, (hero, layer) => {
       // should the player stop?
       let shouldStop = false;
 

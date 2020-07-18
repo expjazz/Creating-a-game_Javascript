@@ -10,7 +10,7 @@ import CreditsScene from './Scenes/CreditsScene';
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-    console.log(Phaser);
+
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', PreloaderScene);
     this.scene.add('Title', TitleScene);

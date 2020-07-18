@@ -33,7 +33,7 @@ export default class TitleScene extends Phaser.Scene {
     this.creditsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
     this.centerButton(this.creditsButton, -1);
 
-    this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
+    this.creditsText = this.add.text(0, 0, 'Whatever', { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(this.creditsText, this.creditsButton);
 
     this.creditsButton.on('pointerdown', (pointer) => {

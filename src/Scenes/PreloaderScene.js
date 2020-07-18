@@ -18,7 +18,6 @@ export default class PreloaderScene extends Phaser.Scene {
     const progressBox = this.add.graphics();
     progressBox.fillStyle(0x222222, 0.8);
     progressBox.fillRect(240, 270, 320, 50);
-
     const { width } = this.cameras.main;
     const { height } = this.cameras.main;
     const loadingText = this.make.text({
@@ -30,7 +29,7 @@ export default class PreloaderScene extends Phaser.Scene {
         fill: '#ffffff',
       },
     });
-    loadingText.setOrigin(0.5, 0.5);
+    loadingText.setOrigin(1.5, 0.5);
 
     const percentText = this.make.text({
       x: width / 2,
@@ -89,10 +88,10 @@ export default class PreloaderScene extends Phaser.Scene {
   }
 
   ready() {
-    this.scene.start('Options');
-    this.readyCount++;
-    if (this.readyCount === 2) {
-      this.scene.start('Title');
-    }
+    // this.scene.start('Options');
+    // this.readyCount++;
+    // if (this.readyCount === 2) {
+    //   // this.scene.start('Title');
+    // }
   }
 }

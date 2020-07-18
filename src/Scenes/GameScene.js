@@ -3,208 +3,367 @@ import 'phaser';
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super('Game');
-
-
     this.gameOptions = {
+      platformSpeedRange: [300, 300],
 
+      // mountain speed, in pixels per second
+      mountainSpeed: 80,
+
+      // spawn range, how far should be the rightmost platform from the right edge
+      // before next platform spawns, in pixels
+      spawnRange: [80, 300],
+
+      // platform width range, in pixels
+      platformSizeRange: [90, 300],
+
+      // a height range between rightmost platform and next platform to be spawned
+      platformHeightRange: [-5, 5],
+
+      // a scale to be multiplied by platformHeightRange
+      platformHeighScale: 20,
+
+      // platform max and min height, as screen height ratio
+      platformVerticalLimit: [0.4, 0.8],
 
       // player gravity
-      playerGravity: 0,
-
-      // player friction when on wall
-      playerGrip: 100,
-
-      // player horizontal speed
-      playerSpeed: 0,
+      playerGravity: 900,
 
       // player jump force
-      playerJump: 400,
+      jumpForce: 400,
 
-      // player double jump force
-      playerDoubleJump: 300,
+      // player starting X position
+      playerStartPosition: 200,
 
-      // trampoline tile impulse
-      trampolineImpulse: 500,
+      // consecutive jumps allowed
+      jumps: 2,
+
+      // % of probability a coin appears on the platform
+      coinPercent: 25,
+
+      // % of probability a fire appears on the platform
+      firePercent: 25,
     };
-    this.STOP_TILE = 2;
-    this.TRAMPOLINE_TILE = 3;
   }
 
+  preload() {
+    this.load.image('platform', '../assets/platform.png');
+
+    // player is a sprite sheet made by 24x48 pixels
+    this.load.spritesheet('player', 'assets/player.png', {
+      frameWidth: 24,
+      frameHeight: 48,
+    });
+
+    // the coin is a sprite sheet made by 20x20 pixels
+    this.load.spritesheet('coin', 'assets/coin.png', {
+      frameWidth: 20,
+      frameHeight: 20,
+    });
+
+    // the firecamp is a sprite sheet made by 32x58 pixels
+    this.load.spritesheet('fire', 'assets/fire.png', {
+      frameWidth: 40,
+      frameHeight: 70,
+    });
+
+    // mountains are a sprite sheet made by 512x512 pixels
+    this.load.spritesheet('mountain', 'assets/mountain.png', {
+      frameWidth: 512,
+      frameHeight: 512,
+    });
+  }
 
   create() {
-    // creation of "level" tilemap
-    this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('#3498db');
-
-
-    this.map = this.make.tilemap({
-      key: 'level',
+    this.anims.create({
+      key: 'run',
+      frames: this.anims.generateFrameNumbers('player', {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 8,
+      repeat: -1,
     });
-    // adding tiles to tilemap
-    const tile = this.map.addTilesetImage('tileset01', 'tile');
 
-    // which layers should we render? That's right, "layer01"
-    this.layer = this.map.createStaticLayer('layer01', tile);
+    // setting coin animation
+    this.anims.create({
+      key: 'rotate',
+      frames: this.anims.generateFrameNumbers('coin', {
+        start: 0,
+        end: 5,
+      }),
+      frameRate: 15,
+      yoyo: true,
+      repeat: -1,
+    });
 
-    // which tiles will collide? Tiles from 1 to 3
-    this.layer.setCollisionBetween(1, 3);
+    // setting fire animation
+    this.anims.create({
+      key: 'burn',
+      frames: this.anims.generateFrameNumbers('fire', {
+        start: 0,
+        end: 4,
+      }),
+      frameRate: 15,
+      repeat: -1,
+    });
 
-    // adding the hero sprite and enabling ARCADE physics for the hero
-    this.hero = this.physics.add.sprite(260, 376, 'hero');
 
-    // setting hero horizontal speed
-    // this.hero.body.velocity.x = 100;
-    this.cursors = this.input.keyboard.createCursorKeys();
+    // group with all active mountains.
+    this.mountainGroup = this.add.group();
 
-    // the hero can jump
-    // this.canJump = true;
+    // group with all active platforms.
+    this.platformGroup = this.add.group({
 
-    // the hern cannot double jump
-    // this.canDoubleJump = false;
+      // once a platform is removed, it's added to the pool
+      removeCallback(platform) {
+        platform.scene.platformPool.add(platform);
+      },
+    });
 
-    // the hero is not on the wall
-    // this.onWall = false;
+    // platform pool
+    this.platformPool = this.add.group({
 
-    // waiting for player input
-    // this.input.on('pointerdown', this.handleJump, this);
+      // once a platform is removed from the pool, it's added to the active platforms group
+      removeCallback(platform) {
+        platform.scene.platformGroup.add(platform);
+      },
+    });
 
-    // set workd bounds to allow camera to follow the player
-    this.cameras.main.setBounds(0, 0, 1920, 1440);
+    // group with all active coins.
+    this.coinGroup = this.add.group({
 
-    // making the camera follow the player
-    this.cameras.main.startFollow(this.hero);
+      // once a coin is removed, it's added to the pool
+      removeCallback(coin) {
+        coin.scene.coinPool.add(coin);
+      },
+    });
+
+    // coin pool
+    this.coinPool = this.add.group({
+
+      // once a coin is removed from the pool, it's added to the active coins group
+      removeCallback(coin) {
+        coin.scene.coinGroup.add(coin);
+      },
+    });
+
+    // group with all active firecamps.
+    this.fireGroup = this.add.group({
+
+      // once a firecamp is removed, it's added to the pool
+      removeCallback(fire) {
+        fire.scene.firePool.add(fire);
+      },
+    });
+
+    // fire pool
+    this.firePool = this.add.group({
+
+      // once a fire is removed from the pool, it's added to the active fire group
+      removeCallback(fire) {
+        fire.scene.fireGroup.add(fire);
+      },
+    });
+
+    this.addMountains();
+
+    this.addedPlatforms = 0;
+
+    this.playerJumps = 0;
+
+    this.addPlatform(800, 800 / 2, 600 * this.gameOptions.platformVerticalLimit[1]);
+
+    this.player = this.physics.add.sprite(this.gameOptions.playerStartPosition, 600 * 0.7, 'player');
+
+    this.player.setGravityY(this.gameOptions.playerGravity);
+    this.player.setDepth(2);
+
+    this.dying = false;
+
+    this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, () => {
+      if (!this.player.anims.isPlaying) {
+        this.player.anims.play('run');
+      }
+    }, null, this);
+
+    this.physics.add.overlap(this.player, this.fireGroup, (player, fire) => {
+      this.dying = true;
+      this.player.anims.stop();
+      this.player.setFrame(2);
+      this.player.body.setVelocityY(-200);
+      this.physics.world.removeCollider(this.platformCollider);
+    }, null, this);
+
+    this.input.on('pointerdown', this.jump, this);
   }
 
-  handleJump() {
-    // the hero can jump when:
-    // canJump is true AND the hero is on the ground (blocked.down)
-    // OR
-    // the hero is on the wall
-    if ((this.canJump && this.hero.body.blocked.none) || this.onWall) {
-      // applying jump force
-      this.hero.body.velocity.y = -600;
-      console.log(this.hero.body.velocity);
-      // is the hero on a wall?
-      if (this.onWall) {
-        // change the horizontal velocity too. This way the hero will jump off the wall
-        this.setPlayerXVelocity(true);
+  addMountains() {
+    const rightmostMountain = this.getRightmostMountain();
+    if (rightmostMountain < 800 * 2) {
+      const mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), 400 + Phaser.Math.Between(0, 100), 'mountain');
+      mountain.setOrigin(0.5, 1);
+      mountain.body.setVelocityX(this.gameOptions.mountainSpeed * -1);
+      this.mountainGroup.add(mountain);
+      if (Phaser.Math.Between(0, 1)) {
+        mountain.setDepth(1);
+      }
+      mountain.setFrame(Phaser.Math.Between(0, 3));
+      this.addMountains();
+    }
+  }
+
+  getRightmostMountain() {
+    let rightmostMountain = -200;
+    this.mountainGroup.getChildren().forEach((mountain) => {
+      rightmostMountain = Math.max(rightmostMountain, mountain.x);
+    });
+    return rightmostMountain;
+  }
+
+  addPlatform(platformWidth, posX, posY) {
+    console.log('test');
+    this.addedPlatforms += 1;
+    let platform;
+    if (this.platformPool.getLength()) {
+      platform = this.platformPool.getFirst();
+      platform.x = posX;
+      platform.y = posY;
+      platform.active = true;
+      platform.visible = true;
+      this.platformPool.remove(platform);
+      const newRatio = platformWidth / platform.displayWidth;
+      platform.displayWidth = platformWidth;
+      platform.tileScaleX = 1 / platform.scaleX;
+    } else {
+      console.log('1');
+      platform = this.add.tileSprite(posX, posY, platformWidth, 32, 'platform');
+      this.physics.add.existing(platform);
+      platform.body.setImmovable(true);
+      platform.body.setVelocityX(Phaser.Math.Between(this.gameOptions.platformSpeedRange[0], this.gameOptions.platformSpeedRange[1]) * -1);
+      platform.setDepth(2);
+      this.platformGroup.add(platform);
+    }
+    this.nextPlatformDistance = Phaser.Math.Between(this.gameOptions.spawnRange[0], this.gameOptions.spawnRange[1]);
+
+    // if this is not the starting platform...
+    if (this.addedPlatforms > 1) {
+      // is there a coin over the platform?
+      if (Phaser.Math.Between(1, 100) <= this.gameOptions.coinPercent) {
+        if (this.coinPool.getLength()) {
+          const coin = this.coinPool.getFirst();
+          coin.x = posX;
+          coin.y = posY - 96;
+          coin.alpha = 1;
+          coin.active = true;
+          coin.visible = true;
+          this.coinPool.remove(coin);
+        } else {
+          const coin = this.physics.add.sprite(posX, posY - 96, 'coin');
+          coin.setImmovable(true);
+          coin.setVelocityX(platform.body.velocity.x);
+          coin.anims.play('rotate');
+          coin.setDepth(2);
+          this.coinGroup.add(coin);
+        }
       }
 
-      // hero can't jump anymore
-      this.canJump = false;
+      // is there a fire over the platform?
+      if (Phaser.Math.Between(1, 100) <= this.gameOptions.firePercent) {
+        if (this.firePool.getLength()) {
+          const fire = this.firePool.getFirst();
+          fire.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+          fire.y = posY - 46;
+          fire.alpha = 1;
+          fire.active = true;
+          fire.visible = true;
+          this.firePool.remove(fire);
+        } else {
+          const fire = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), posY - 46, 'fire');
+          fire.setImmovable(true);
+          fire.setVelocityX(platform.body.velocity.x);
+          fire.setSize(8, 2, true);
+          fire.anims.play('burn');
+          fire.setDepth(2);
+          this.fireGroup.add(fire);
+        }
+      }
+    }
+  }
 
-      // hero is not on the wall anymore
-      this.onWall = false;
-      // the hero can now double jump
-      this.canDoubleJump = true;
-    } else if (this.canDoubleJump) {
-      // the hero can't double jump anymore
-      this.canDoubleJump = false;
+  jump() {
+    if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps))) {
+      if (this.player.body.touching.down) {
+        this.playerJumps = 0;
+      }
+      this.player.setVelocityY(this.gameOptions.jumpForce * -1);
+      this.playerJumps++;
 
-      // applying double jump force
-      this.hero.body.velocity.y = this.gameOptions.playerDoubleJump;
+      // stops animation
+      this.player.anims.stop();
     }
   }
 
   update() {
-    // set some default gravity values. Look at the function for more information
-    // this.setDefaultValues();
-    if (this.cursors.left.isDown) {
-      this.hero.setVelocityX(-160);
-    } else if (this.cursors.right.isDown) {
-      this.hero.setVelocityX(160);
-    } else {
-      this.hero.setVelocityX(0);
+    // game over
+    if (this.player.y > game.config.height) {
+      this.scene.start('PlayGame');
     }
 
-    if (this.cursors.up.isDown) {
-      // this.handleJump();
-      this.hero.setVelocityY(-160);
-    }
+    this.player.x = this.gameOptions.playerStartPosition;
 
+    // recycling platforms
+    let minDistance = game.config.width;
+    let rightmostPlatformHeight = 0;
+    this.platformGroup.getChildren().forEach(function (platform) {
+      const platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
+      if (platformDistance < minDistance) {
+        minDistance = platformDistance;
+        rightmostPlatformHeight = platform.y;
+      }
+      if (platform.x < -platform.displayWidth / 2) {
+        this.platformGroup.killAndHide(platform);
+        this.platformGroup.remove(platform);
+      }
+    }, this);
 
-    // handling collision between the hero and the tiles
-    this.physics.world.collide(this.hero, this.layer, (hero, layer) => {
-      // should the player stop?
-      let shouldStop = false;
+    // recycling coins
+    this.coinGroup.getChildren().forEach(function (coin) {
+      if (coin.x < -coin.displayWidth / 2) {
+        this.coinGroup.killAndHide(coin);
+        this.coinGroup.remove(coin);
+      }
+    }, this);
 
-      // some temporary variables to determine if the player is blocked only once
-      const blockedDown = hero.body.blocked.down;
-      const blockedLeft = hero.body.blocked.left;
-      const blockedRight = hero.body.blocked.right;
+    // recycling fire
+    this.fireGroup.getChildren().forEach(function (fire) {
+      if (fire.x < -fire.displayWidth / 2) {
+        this.fireGroup.killAndHide(fire);
+        this.fireGroup.remove(fire);
+      }
+    }, this);
 
-      // if the hero hits something, no double jump is allowed
-      this.canDoubleJump = false;
-
-      // hero on the ground
-      if (blockedDown) {
-        // hero can jump
-        this.canJump = true;
-
-        // if we are on tile 2 (stop tile)...
-        if (layer.index === this.STOP_TILE) {
-          // player should stop
-          shouldStop = true;
+    // recycling mountains
+    this.mountainGroup.getChildren().forEach(function (mountain) {
+      if (mountain.x < -mountain.displayWidth) {
+        const rightmostMountain = this.getRightmostMountain();
+        mountain.x = rightmostMountain + Phaser.Math.Between(100, 350);
+        mountain.y = 400 + Phaser.Math.Between(0, 100);
+        mountain.setFrame(Phaser.Math.Between(0, 3));
+        if (Phaser.Math.Between(0, 1)) {
+          mountain.setDepth(1);
         }
-
-        // if we are on a trampoline and previous player velocity was greater than zero
-        if (layer.index === this.TRAMPOLINE_TILE && this.previousYVelocity > 0) {
-          // trampoline jump!
-          hero.body.velocity.y = 500;
-
-          // hero can double jump
-          this.canDoubleJump = true;
-        }
       }
+    }, this);
 
-      // hero on the ground and touching a wall on the right
-      if (blockedRight) {
-        // horizontal flipping hero sprite
-        hero.flipX = true;
-      }
-
-      // hero on the ground and touching a wall on the right
-      if (blockedLeft) {
-        // default orientation of hero sprite
-        hero.flipX = false;
-      }
-
-      // hero NOT on the ground and touching a wall
-      if ((blockedRight || blockedLeft) && !blockedDown) {
-        // hero on a wall
-        hero.scene.onWall = true;
-
-        // remove gravity
-        hero.body.gravity.y = 0;
-
-        // setting new y velocity
-        hero.body.velocity.y = 500;
-      }
-
-      // adjusting hero speed according to the direction it's moving
-      this.setPlayerXVelocity(!this.onWall || blockedDown, shouldStop);
-    }, null, this);
-
-    // saving current vertical velocity
-    this.previousYVelocity = this.hero.body.velocity.y;
-  }
-
-  // default values to be set at the beginning of each update cycle,
-  // which may be changed according to what happens into "collide" callback function
-  // (if called)
-  setDefaultValues() {
-    this.hero.body.gravity.y = 500;
-    this.onWall = false;
-    this.setPlayerXVelocity(true, null);
-  }
-
-  // sets player velocity according to the direction it's facing, unless "defaultDirection"
-  // is false, in this case multiplies the velocity by -1
-  // if stopIt is true, just stop the player
-  setPlayerXVelocity(defaultDirection, stopIt) {
-    if (stopIt) {
-      this.hero.body.velocity.x = 0;
-    } else {
-      this.hero.body.velocity.x = this.gameOptions.playerSpeed * (this.hero.flipX ? -1 : 1) * (defaultDirection ? 1 : -1);
+    // adding new platforms
+    if (minDistance > this.nextPlatformDistance) {
+      const nextPlatformWidth = Phaser.Math.Between(this.gameOptions.platformSizeRange[0], this.gameOptions.platformSizeRange[1]);
+      const platformRandomHeight = this.gameOptions.platformHeighScale * Phaser.Math.Between(this.gameOptions.platformHeightRange[0], this.gameOptions.platformHeightRange[1]);
+      const nextPlatformGap = rightmostPlatformHeight + platformRandomHeight;
+      const minPlatformHeight = 600 * this.gameOptions.platformVerticalLimit[0];
+      const maxPlatformHeight = 600 * this.gameOptions.platformVerticalLimit[1];
+      const nextPlatformHeight = Phaser.Math.Clamp(nextPlatformGap, minPlatformHeight, maxPlatformHeight);
+      this.addPlatform(nextPlatformWidth, 800 + nextPlatformWidth / 2, nextPlatformHeight);
     }
   }
 }

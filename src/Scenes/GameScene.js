@@ -46,6 +46,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('sky', '../assets/BG.png');
     this.load.image('platform', '../assets/platform.png');
 
     // player is a sprite sheet made by 24x48 pixels
@@ -166,6 +167,8 @@ export default class GameScene extends Phaser.Scene {
     });
 
     this.addMountains();
+    this.add.image(400, 300, 'sky');
+
 
     this.addedPlatforms = 0;
 

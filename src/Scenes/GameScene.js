@@ -15,7 +15,7 @@ export default class GameScene extends Phaser.Scene {
       playerGrip: 100,
 
       // player horizontal speed
-      playerSpeed: 100,
+      playerSpeed: 0,
 
       // player jump force
       playerJump: 400,
@@ -52,7 +52,8 @@ export default class GameScene extends Phaser.Scene {
     this.hero = this.physics.add.sprite(260, 376, 'hero');
 
     // setting hero horizontal speed
-    this.hero.body.velocity.x = this.gameOptions.playerSpeed;
+    this.hero.body.velocity.x = 100;
+    this.cursors = this.input.keyboard.createCursorKeys();
 
     // the hero can jump
     this.canJump = true;
@@ -62,6 +63,7 @@ export default class GameScene extends Phaser.Scene {
 
     // the hero is not on the wall
     this.onWall = false;
+
 
     // waiting for player input
     this.input.on('pointerdown', this.handleJump, this);
@@ -74,15 +76,14 @@ export default class GameScene extends Phaser.Scene {
   }
 
   handleJump() {
-    console.log(this.canJump);
     // the hero can jump when:
     // canJump is true AND the hero is on the ground (blocked.down)
     // OR
     // the hero is on the wall
     if ((this.canJump && this.hero.body.blocked.down) || this.onWall) {
       // applying jump force
-      this.hero.body.velocity.y = 300;
-      console.log('a');
+      this.hero.body.velocity.y = 600;
+      console.log(this.hero.body.velocity);
       // is the hero on a wall?
       if (this.onWall) {
         // change the horizontal velocity too. This way the hero will jump off the wall
@@ -94,7 +95,6 @@ export default class GameScene extends Phaser.Scene {
 
       // hero is not on the wall anymore
       this.onWall = false;
-
       // the hero can now double jump
       this.canDoubleJump = true;
     } else if (this.canDoubleJump) {
@@ -108,7 +108,15 @@ export default class GameScene extends Phaser.Scene {
 
   update() {
     // set some default gravity values. Look at the function for more information
-    this.setDefaultValues();
+    // this.setDefaultValues();
+    if (this.cursors.left.isDown) {
+      this.hero.setVelocityX(-160);
+    } else if (this.cursors.right.isDown) {
+      this.hero.setVelocityX(160);
+    } else {
+      this.hero.setVelocityX(0);
+    }
+
 
     // handling collision between the hero and the tiles
     this.physics.world.collide(this.hero, this.layer, function (hero, layer) {
@@ -137,7 +145,7 @@ export default class GameScene extends Phaser.Scene {
         // if we are on a trampoline and previous player velocity was greater than zero
         if (layer.index === this.TRAMPOLINE_TILE && this.previousYVelocity > 0) {
           // trampoline jump!
-          hero.body.velocity.y = -this.gameOptions.trampolineImpulse;
+          hero.body.velocity.y = 500;
 
           // hero can double jump
           this.canDoubleJump = true;
@@ -165,7 +173,7 @@ export default class GameScene extends Phaser.Scene {
         hero.body.gravity.y = 0;
 
         // setting new y velocity
-        hero.body.velocity.y = this.gameOptions.playerGrip;
+        hero.body.velocity.y = 500;
       }
 
       // adjusting hero speed according to the direction it's moving
@@ -180,9 +188,9 @@ export default class GameScene extends Phaser.Scene {
   // which may be changed according to what happens into "collide" callback function
   // (if called)
   setDefaultValues() {
-    this.hero.body.gravity.y = this.gameOptions.playerGravity;
+    this.hero.body.gravity.y = 500;
     this.onWall = false;
-    this.setPlayerXVelocity(true);
+    this.setPlayerXVelocity(true, null);
   }
 
   // sets player velocity according to the direction it's facing, unless "defaultDirection"

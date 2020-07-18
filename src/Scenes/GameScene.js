@@ -4,17 +4,17 @@ export default class GameScene extends Phaser.Scene {
   constructor() {
     super('Game');
     this.gameOptions = {
-      platformSpeedRange: [300, 300],
+      platformSpeedRange: [100, 100],
 
       // mountain speed, in pixels per second
       mountainSpeed: 80,
 
       // spawn range, how far should be the rightmost platform from the right edge
       // before next platform spawns, in pixels
-      spawnRange: [80, 300],
+      spawnRange: [80, 100],
 
       // platform width range, in pixels
-      platformSizeRange: [90, 300],
+      platformSizeRange: [300, 300],
 
       // a height range between rightmost platform and next platform to be spawned
       platformHeightRange: [-5, 5],
@@ -46,8 +46,14 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', '../assets/BG.png');
+    // this.load.image('sky', '../assets/BG.png');
     this.load.image('platform', '../assets/platform.png');
+    this.load.image('ftrees', 'assets/ftrees.png');
+    this.load.image('trees', 'assets/trees.png');
+    this.load.image('mountains', 'assets/mountains.png');
+    this.load.image('mountain2', 'assets/mountain2.png');
+    this.load.image('mountainfaar', 'assets/mountainfaar.png');
+
 
     // player is a sprite sheet made by 24x48 pixels
     this.load.spritesheet('player', 'assets/player.png', {
@@ -62,19 +68,41 @@ export default class GameScene extends Phaser.Scene {
     });
 
     // the firecamp is a sprite sheet made by 32x58 pixels
-    this.load.spritesheet('fire', 'assets/fire.png', {
-      frameWidth: 40,
-      frameHeight: 70,
-    });
+    // this.load.spritesheet('fire', 'assets/fire.png', {
+    //   frameWidth: 40,
+    //   frameHeight: 70,
+    // });
 
     // mountains are a sprite sheet made by 512x512 pixels
-    this.load.spritesheet('mountain', 'assets/mountain.png', {
-      frameWidth: 512,
-      frameHeight: 512,
-    });
+    // this.load.spritesheet('mountain', 'assets/mountain.png', {
+    //   frameWidth: 512,
+    //   frameHeight: 512,
+    // });
   }
 
   create() {
+    this.mountains = this.add.tileSprite(0,
+      0, 800, 600, 'mountains');
+    this.mountainfaar = this.add.tileSprite(0,
+      0, 800, 600, 'mountain2');
+    this.mountain2 = this.add.tileSprite(0,
+      0, 800, 600, 'mountainfaar');
+    this.trees = this.add.tileSprite(0,
+      0, 800, 600, 'trees');
+    this.ftrees = this.add.tileSprite(0,
+      0, 800, 600, 'ftrees');
+
+    this.mountains.setOrigin(0, 0);
+    this.mountains.setScrollFactor(0);
+    this.mountainfaar.setOrigin(0, 0);
+    this.mountainfaar.setScrollFactor(0);
+    this.mountain2.setOrigin(0, 0);
+    this.mountain2.setScrollFactor(0);
+    this.trees.setOrigin(0, 0);
+    this.trees.setScrollFactor(0);
+    this.ftrees.setOrigin(0, 0);
+    this.ftrees.setScrollFactor(0);
+
     this.anims.create({
       key: 'run',
       frames: this.anims.generateFrameNumbers('player', {
@@ -98,19 +126,19 @@ export default class GameScene extends Phaser.Scene {
     });
 
     // setting fire animation
-    this.anims.create({
-      key: 'burn',
-      frames: this.anims.generateFrameNumbers('fire', {
-        start: 0,
-        end: 4,
-      }),
-      frameRate: 15,
-      repeat: -1,
-    });
+    // this.anims.create({
+    //   key: 'burn',
+    //   frames: this.anims.generateFrameNumbers('fire', {
+    //     start: 0,
+    //     end: 4,
+    //   }),
+    //   frameRate: 15,
+    //   repeat: -1,
+    // });
 
 
     // group with all active mountains.
-    this.mountainGroup = this.add.group();
+    // this.mountainGroup = this.add.group();
 
     // group with all active platforms.
     this.platformGroup = this.add.group({
@@ -148,26 +176,26 @@ export default class GameScene extends Phaser.Scene {
       },
     });
 
-    // group with all active firecamps.
-    this.fireGroup = this.add.group({
+    // // group with all active firecamps.
+    // this.fireGroup = this.add.group({
 
-      // once a firecamp is removed, it's added to the pool
-      removeCallback(fire) {
-        fire.scene.firePool.add(fire);
-      },
-    });
+    //   // once a firecamp is removed, it's added to the pool
+    //   removeCallback(fire) {
+    //     fire.scene.firePool.add(fire);
+    //   },
+    // });
 
-    // fire pool
-    this.firePool = this.add.group({
+    // // fire pool
+    // this.firePool = this.add.group({
 
-      // once a fire is removed from the pool, it's added to the active fire group
-      removeCallback(fire) {
-        fire.scene.fireGroup.add(fire);
-      },
-    });
+    //   // once a fire is removed from the pool, it's added to the active fire group
+    //   removeCallback(fire) {
+    //     fire.scene.fireGroup.add(fire);
+    //   },
+    // });
 
-    this.addMountains();
-    this.add.image(400, 300, 'sky');
+    // this.addMountains();
+    // this.add.image(400, 300, 'sky');
 
 
     this.addedPlatforms = 0;
@@ -189,39 +217,39 @@ export default class GameScene extends Phaser.Scene {
       }
     }, null, this);
 
-    this.physics.add.overlap(this.player, this.fireGroup, (player, fire) => {
-      this.dying = true;
-      this.player.anims.stop();
-      this.player.setFrame(2);
-      this.player.body.setVelocityY(-200);
-      this.physics.world.removeCollider(this.platformCollider);
-    }, null, this);
+    // this.physics.add.overlap(this.player, this.fireGroup, (player, fire) => {
+    //   this.dying = true;
+    //   this.player.anims.stop();
+    //   this.player.setFrame(2);
+    //   this.player.body.setVelocityY(-200);
+    //   this.physics.world.removeCollider(this.platformCollider);
+    // }, null, this);
 
     this.input.on('pointerdown', this.jump, this);
   }
 
-  addMountains() {
-    const rightmostMountain = this.getRightmostMountain();
-    if (rightmostMountain < 800 * 2) {
-      const mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), 400 + Phaser.Math.Between(0, 100), 'mountain');
-      mountain.setOrigin(0.5, 1);
-      mountain.body.setVelocityX(this.gameOptions.mountainSpeed * -1);
-      this.mountainGroup.add(mountain);
-      if (Phaser.Math.Between(0, 1)) {
-        mountain.setDepth(1);
-      }
-      mountain.setFrame(Phaser.Math.Between(0, 3));
-      this.addMountains();
-    }
-  }
+  // addMountains() {
+  //   const rightmostMountain = this.getRightmostMountain();
+  //   if (rightmostMountain < 800 * 2) {
+  //     const mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), 400 + Phaser.Math.Between(0, 100), 'mountain');
+  //     mountain.setOrigin(0.5, 1);
+  //     mountain.body.setVelocityX(this.gameOptions.mountainSpeed * -1);
+  //     this.mountainGroup.add(mountain);
+  //     if (Phaser.Math.Between(0, 1)) {
+  //       mountain.setDepth(1);
+  //     }
+  //     mountain.setFrame(Phaser.Math.Between(0, 3));
+  //     this.addMountains();
+  //   }
+  // }
 
-  getRightmostMountain() {
-    let rightmostMountain = -200;
-    this.mountainGroup.getChildren().forEach((mountain) => {
-      rightmostMountain = Math.max(rightmostMountain, mountain.x);
-    });
-    return rightmostMountain;
-  }
+  // getRightmostMountain() {
+  //   let rightmostMountain = -200;
+  //   this.mountainGroup.getChildren().forEach((mountain) => {
+  //     rightmostMountain = Math.max(rightmostMountain, mountain.x);
+  //   });
+  //   return rightmostMountain;
+  // }
 
   addPlatform(platformWidth, posX, posY) {
     console.log('test');
@@ -270,26 +298,26 @@ export default class GameScene extends Phaser.Scene {
         }
       }
 
-      // is there a fire over the platform?
-      if (Phaser.Math.Between(1, 100) <= this.gameOptions.firePercent) {
-        if (this.firePool.getLength()) {
-          const fire = this.firePool.getFirst();
-          fire.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
-          fire.y = posY - 46;
-          fire.alpha = 1;
-          fire.active = true;
-          fire.visible = true;
-          this.firePool.remove(fire);
-        } else {
-          const fire = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), posY - 46, 'fire');
-          fire.setImmovable(true);
-          fire.setVelocityX(platform.body.velocity.x);
-          fire.setSize(8, 2, true);
-          fire.anims.play('burn');
-          fire.setDepth(2);
-          this.fireGroup.add(fire);
-        }
-      }
+      // // is there a fire over the platform?
+      // if (Phaser.Math.Between(1, 100) <= this.gameOptions.firePercent) {
+      //   if (this.firePool.getLength()) {
+      //     const fire = this.firePool.getFirst();
+      //     fire.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+      //     fire.y = posY - 46;
+      //     fire.alpha = 1;
+      //     fire.active = true;
+      //     fire.visible = true;
+      //     this.firePool.remove(fire);
+      //   } else {
+      //     const fire = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), posY - 46, 'fire');
+      //     fire.setImmovable(true);
+      //     fire.setVelocityX(platform.body.velocity.x);
+      //     fire.setSize(8, 2, true);
+      //     fire.anims.play('burn');
+      //     fire.setDepth(2);
+      //     this.fireGroup.add(fire);
+      //   }
+      // }
     }
   }
 
@@ -307,18 +335,25 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update() {
+    this.ftrees.tilePositionX -= 0.05;
+    this.trees.tilePositionX -= 0.3;
+    this.mountains.tilePositionX -= 0.75;
+    this.mountainfaar.tilePositionX -= 0.85;
+    this.mountain2.tilePositionX -= 0.95;
+
+
     // game over
-    if (this.player.y > game.config.height) {
+    if (this.player.y > 600) {
       this.scene.start('PlayGame');
     }
 
     this.player.x = this.gameOptions.playerStartPosition;
 
     // recycling platforms
-    let minDistance = game.config.width;
+    let minDistance = 600;
     let rightmostPlatformHeight = 0;
     this.platformGroup.getChildren().forEach(function (platform) {
-      const platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
+      const platformDistance = 800 - platform.x - platform.displayWidth / 2;
       if (platformDistance < minDistance) {
         minDistance = platformDistance;
         rightmostPlatformHeight = platform.y;
@@ -338,25 +373,25 @@ export default class GameScene extends Phaser.Scene {
     }, this);
 
     // recycling fire
-    this.fireGroup.getChildren().forEach(function (fire) {
-      if (fire.x < -fire.displayWidth / 2) {
-        this.fireGroup.killAndHide(fire);
-        this.fireGroup.remove(fire);
-      }
-    }, this);
+    // this.fireGroup.getChildren().forEach(function (fire) {
+    //   if (fire.x < -fire.displayWidth / 2) {
+    //     this.fireGroup.killAndHide(fire);
+    //     this.fireGroup.remove(fire);
+    //   }
+    // }, this);
 
-    // recycling mountains
-    this.mountainGroup.getChildren().forEach(function (mountain) {
-      if (mountain.x < -mountain.displayWidth) {
-        const rightmostMountain = this.getRightmostMountain();
-        mountain.x = rightmostMountain + Phaser.Math.Between(100, 350);
-        mountain.y = 400 + Phaser.Math.Between(0, 100);
-        mountain.setFrame(Phaser.Math.Between(0, 3));
-        if (Phaser.Math.Between(0, 1)) {
-          mountain.setDepth(1);
-        }
-      }
-    }, this);
+    // // recycling mountains
+    // this.mountainGroup.getChildren().forEach(function (mountain) {
+    //   if (mountain.x < -mountain.displayWidth) {
+    //     const rightmostMountain = this.getRightmostMountain();
+    //     mountain.x = rightmostMountain + Phaser.Math.Between(100, 350);
+    //     mountain.y = 400 + Phaser.Math.Between(0, 100);
+    //     mountain.setFrame(Phaser.Math.Between(0, 3));
+    //     if (Phaser.Math.Between(0, 1)) {
+    //       mountain.setDepth(1);
+    //     }
+    //   }
+    // }, this);
 
     // adding new platforms
     if (minDistance > this.nextPlatformDistance) {

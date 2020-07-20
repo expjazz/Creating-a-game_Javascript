@@ -48,12 +48,12 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {
     // this.load.image('sky', '../assets/BG.png');
-    this.load.image('platform', '../assets/platform.png');
-    this.load.image('ftrees', 'assets/ftrees.png');
-    this.load.image('trees', 'assets/trees.png');
-    this.load.image('mountains', 'assets/mountains.png');
-    this.load.image('mountain2', 'assets/mountain2.png');
-    this.load.image('mountainfaar', 'assets/mountainfaar.png');
+    // this.load.image('platform', '../assets/platform.png');
+    // this.load.image('ftrees', 'assets/ftrees.png');
+    this.load.image('trees', 'assets/foreground.png');
+    this.load.image('mountains', 'assets/back-buildings.png');
+    this.load.image('mountain2', 'assets/far-buildings.png');
+    // this.load.image('mountainfaar', 'assets/mountainfaar.png');
 
 
     // player is a sprite sheet made by 24x48 pixels
@@ -84,14 +84,14 @@ export default class GameScene extends Phaser.Scene {
   create() {
     this.mountains = this.add.tileSprite(0,
       0, 0, 0, 'mountains').setScale(1);
-    this.mountainfaar = this.add.tileSprite(0,
-      0, 0, 0, 'mountain2').setScale(1);
+    // this.mountainfaar = this.add.tileSprite(0,
+    //   0, 0, 0, 'mountain2').setScale(1);
     this.mountain2 = this.add.tileSprite(0,
       0, 0, 0, 'mountainfaar').setScale(1);
     this.trees = this.add.tileSprite(4,
       0, 0, 0, 'trees').setScale(1);
-    this.ftrees = this.add.tileSprite(0,
-      0, 0, 0, 'ftrees').setScale(1);
+    // this.ftrees = this.add.tileSprite(0,
+    // 0, 0, 0, 'ftrees').setScale(1);
 
     this.mountains.setOrigin(0, 0);
     this.mountains.setScrollFactor(0);
@@ -104,8 +104,8 @@ export default class GameScene extends Phaser.Scene {
     this.trees.setOrigin(0, 0);
     this.trees.setScrollFactor(0);
 
-    this.ftrees.setOrigin(0, 0);
-    this.ftrees.setScrollFactor(0);
+    // this.ftrees.setOrigin(0, 0);
+    // this.ftrees.setScrollFactor(0);
     this.time.addEvent({
       delay: 20000,
       callback() {
@@ -344,7 +344,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update() {
-    this.ftrees.tilePositionX -= 0.05;
+    // this.ftrees.tilePositionX -= 0.05;
     this.trees.tilePositionX -= 0.3;
     this.mountains.tilePositionX -= 0.75;
     // this.mountainfaar.tilePositionX -= 0.85;

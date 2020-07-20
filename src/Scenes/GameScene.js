@@ -114,8 +114,8 @@ export default class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'run',
       frames: this.anims.generateFrameNumbers('player', {
-        start: 0,
-        end: 1,
+        start: 15,
+        end: 16,
       }),
       frameRate: 8,
       repeat: -1,

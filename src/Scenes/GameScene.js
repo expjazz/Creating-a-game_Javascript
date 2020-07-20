@@ -103,7 +103,14 @@ export default class GameScene extends Phaser.Scene {
     this.trees.setScrollFactor(0);
     this.ftrees.setOrigin(0, 0);
     this.ftrees.setScrollFactor(0);
-
+    this.time.addEvent({
+      delay: 5000,
+      callback() {
+        this.scene.pause();
+        this.scene.start('MidDialogue');
+      },
+      callbackScope: this,
+    });
     this.anims.create({
       key: 'run',
       frames: this.anims.generateFrameNumbers('player', {

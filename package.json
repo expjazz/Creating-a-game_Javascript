@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "build": "webpack",
-
     "start": "npm run build && webpack-dev-server --port=8000"
   },
   "repository": {
@@ -36,6 +35,7 @@
     "webpack-merge": "^5.0.9"
   },
   "dependencies": {
-    "phaser": "^3.20.1"
+    "phaser": "^3.20.1",
+    "phaser3-rex-plugins": "^1.1.20"
   }
 }

@@ -1,10 +1,11 @@
 import Phaser from 'phaser';
 
 export default class MidDialogue extends Phaser.Scene {
-  constructor(title, content) {
+  constructor(title, content, nextScene) {
     super('MidDialogue');
     this.title = title;
     this.content = content;
+    this.nextScene = nextScene;
   }
 
   preload() {
@@ -18,8 +19,7 @@ export default class MidDialogue extends Phaser.Scene {
   create() {
     const scene = this;
     Alert(scene, this.title, this.content)
-      .then(() => Alert(scene, 'Alert2', 'Hello again'))
-      .then(() => Alert(scene, 'Alert3', 'Goodbye')).then(() => this.scene.start('Game'));
+      .then(() => this.scene.start(this.nextScene));
   }
 
   update() { }

@@ -22,9 +22,9 @@ class Game extends Phaser.Game {
     this.scene.add('Credits', CreditsScene);
 
     this.scene.add('Introduction', IntroductionScene);
-    this.scene.add('PhaseOne', new GameScene(back.background[0], 'placeholder', 'DialogueOne', 3.2));
-    this.scene.add('PhaseTwo', new GameScene(back.background[1], 'placeholder', 'DialogueTwo'));
-    this.scene.add('PhaseThree', new GameScene(back.background[2], 'placeholder', 'DialogueThree'));
+    this.scene.add('PhaseOne', new GameScene(back.background[0], 'placeholder', 'DialogueOne', 60000, 3.2));
+    this.scene.add('PhaseTwo', new GameScene(back.background[1], 'placeholder', 'DialogueTwo', 60000));
+    this.scene.add('PhaseThree', new GameScene(back.background[2], 'placeholder', 'DialogueThree', 60000));
 
     this.scene.add('DialogueOne', new MidDialogue('title', 'content', 'PhaseOne'));
     this.scene.add('DialogueTwo', new MidDialogue('title', 'content', 'PhaseTwo'));

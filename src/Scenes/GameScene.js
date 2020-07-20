@@ -2,12 +2,13 @@
 import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(background, level, nextScene, selfScale = 1) {
+  constructor(background, level, nextScene, seconds, selfScale = 1) {
     super('Game');
     // this.game = gameObj;
-    this.seconds = 60000;
+    this.seconds = seconds;
     this.selfScale = selfScale;
     this.background = background;
+    this.nextScene = nextScene;
     this.parallax = 0;
     this.gameOptions = {
       platformSpeedRange: [100, 100],
@@ -125,10 +126,10 @@ export default class GameScene extends Phaser.Scene {
     // this.ftrees.setOrigin(0, 0);
     // this.ftrees.setScrollFactor(0);
     this.time.addEvent({
-      delay: 20000000000000,
+      delay: this.seconds,
       callback() {
         this.scene.pause();
-        this.scene.start('MidDialogue');
+        this.scene.start(this.nextScene);
       },
       callbackScope: this,
     });

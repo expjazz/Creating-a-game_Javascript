@@ -2,7 +2,7 @@
 import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(background, level, scene, selfScale = 1) {
+  constructor(background, level, nextScene, selfScale = 1) {
     super('Game');
     // this.game = gameObj;
     this.seconds = 60000;

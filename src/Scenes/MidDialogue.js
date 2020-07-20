@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 export default class MidDialogue extends Phaser.Scene {
   constructor(title, content, nextScene) {
-    super('MidDialogue');
+    super('DialogueOne');
     this.title = title;
     this.content = content;
     this.nextScene = nextScene;

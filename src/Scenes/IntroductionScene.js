@@ -9,7 +9,7 @@ export default class IntroductionScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor('#000111');
     this.introText = this.add.text(0, 0, 'Introduction', { fontSize: '32px', fill: '#fff' });
-    this.madeByText = this.add.text(0, 0, 'We live in a strange world where some people mistreat they little pets. John, our hero works in a non-profit organization where he needs to save any kind of animals that are hurt. It does not matter where (sometimes a city, a florest, or even a desert), our hero is always there to do whatever it takes. Sometimes the pets are too heart and need medical attention really quick. Can he fill the task and save the little guys?');
+    this.madeByText = this.add.text(0, 0, 'We live in a strange world where some people mistreat they little pets. \nto John, our hero works in a non-profit organization where he needs to save any kind of animals that are hurt. It does not matter where (sometimes a city, a florest, or even a desert), our hero is always there to do whatever it takes.  \nto Sometimes the pets are too heart and need medical attention really quick.  \nto Can he fill the task and save the little guys?');
     this.zone = this.add.zone(800 / 2, 600 / 2, 800, 600);
 
     this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -36,17 +36,17 @@ export default class IntroductionScene extends Phaser.Scene {
     this.madeByTween = this.tweens.add({
       targets: this.madeByText,
       y: -500,
-      duration: 55000,
+      duration: 6000,
       delay: 0,
       onComplete: (() => {
-        this.scene.start(('Game'));
+        this.scene.start('One');
       }),
     });
   }
 
   update() {
     if (this.keySpace.isDown) {
-      this.scene.start('Game');
+      this.scene.start('One');
     }
   }
 }

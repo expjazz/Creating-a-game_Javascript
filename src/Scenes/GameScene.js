@@ -3,7 +3,7 @@ import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
   constructor(background, level, nextScene, seconds, selfScale = 1) {
-    super('Game');
+    super('One');
     // this.game = gameObj;
     this.seconds = seconds;
     this.selfScale = selfScale;
@@ -47,7 +47,7 @@ export default class GameScene extends Phaser.Scene {
       // % of probability a coin appears on the platform
       coinPercent: 80,
 
-      spiderPercent: 90,
+      spiderPercent: 30,
 
       // % of probability a fire appears on the platform
       firePercent: 25,
@@ -95,12 +95,12 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    console.log(this.nextScene);
     this.background.forEach((back) => {
       this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(this.selfScale);
       this[back].setOrigin(0, 0);
       this[back].setScrollFactor(0);
     });
-    console.log(this);
     // this.mountains = this.add.tileSprite(0,
     //   0, 0, 0, 'mountains').setScale(3.2);
     // // this.mountainfaar = this.add.tileSprite(0,
@@ -129,6 +129,7 @@ export default class GameScene extends Phaser.Scene {
       delay: this.seconds,
       callback() {
         this.scene.pause();
+
         this.scene.start(this.nextScene);
       },
       callbackScope: this,

@@ -2,10 +2,11 @@
 import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(gameObj) {
+  constructor(background, level, scene) {
     super('Game');
     this.game = gameObj;
     this.seconds = 180000;
+    this.background = background;
     this.gameOptions = {
       platformSpeedRange: [100, 100],
 

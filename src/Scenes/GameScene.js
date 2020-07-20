@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
@@ -82,11 +83,11 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     this.mountains = this.add.tileSprite(0,
-      0, 800, 600, 'mountains');
+      0, 400, 300, 'mountains');
     this.mountainfaar = this.add.tileSprite(0,
-      0, 800, 600, 'mountain2');
+      0, 400, 300, 'mountain2');
     this.mountain2 = this.add.tileSprite(0,
-      0, 800, 600, 'mountainfaar');
+      0, 400, 300, 'mountainfaar');
     this.trees = this.add.tileSprite(0,
       0, 800, 600, 'trees');
     this.ftrees = this.add.tileSprite(0,
@@ -252,7 +253,6 @@ export default class GameScene extends Phaser.Scene {
   // }
 
   addPlatform(platformWidth, posX, posY) {
-    console.log('test');
     this.addedPlatforms += 1;
     let platform;
     if (this.platformPool.getLength()) {
@@ -266,7 +266,6 @@ export default class GameScene extends Phaser.Scene {
       platform.displayWidth = platformWidth;
       platform.tileScaleX = 1 / platform.scaleX;
     } else {
-      console.log('1');
       platform = this.add.tileSprite(posX, posY, platformWidth, 32, 'platform');
       this.physics.add.existing(platform);
       platform.body.setImmovable(true);
@@ -327,7 +326,7 @@ export default class GameScene extends Phaser.Scene {
         this.playerJumps = 0;
       }
       this.player.setVelocityY(this.gameOptions.jumpForce * -1);
-      this.playerJumps++;
+      this.playerJumps += 1;
 
       // stops animation
       this.player.anims.stop();
@@ -352,7 +351,7 @@ export default class GameScene extends Phaser.Scene {
     // recycling platforms
     let minDistance = 600;
     let rightmostPlatformHeight = 0;
-    this.platformGroup.getChildren().forEach(function (platform) {
+    this.platformGroup.getChildren().forEach((platform) => {
       const platformDistance = 800 - platform.x - platform.displayWidth / 2;
       if (platformDistance < minDistance) {
         minDistance = platformDistance;
@@ -365,7 +364,7 @@ export default class GameScene extends Phaser.Scene {
     }, this);
 
     // recycling coins
-    this.coinGroup.getChildren().forEach(function (coin) {
+    this.coinGroup.getChildren().forEach((coin) => {
       if (coin.x < -coin.displayWidth / 2) {
         this.coinGroup.killAndHide(coin);
         this.coinGroup.remove(coin);

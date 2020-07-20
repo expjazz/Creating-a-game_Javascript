@@ -57,8 +57,8 @@ export default class GameScene extends Phaser.Scene {
 
 
     // player is a sprite sheet made by 24x48 pixels
-    this.load.spritesheet('player', 'assets/player.png', {
-      frameWidth: 24,
+    this.load.spritesheet('player', 'assets/dude.png', {
+      frameWidth: 32,
       frameHeight: 48,
     });
 
@@ -83,15 +83,15 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     this.mountains = this.add.tileSprite(0,
-      0, 0, 0, 'mountains').setScale(4);
+      0, 0, 0, 'mountains').setScale(1);
     this.mountainfaar = this.add.tileSprite(0,
-      0, 0, 0, 'mountain2').setScale(4);
+      0, 0, 0, 'mountain2').setScale(1);
     this.mountain2 = this.add.tileSprite(0,
-      0, 0, 0, 'mountainfaar').setScale(4);
+      0, 0, 0, 'mountainfaar').setScale(1);
     this.trees = this.add.tileSprite(4,
-      0, 0, 0, 'trees').setScale(4);
+      0, 0, 0, 'trees').setScale(1);
     this.ftrees = this.add.tileSprite(0,
-      0, 0, 0, 'ftrees').setScale(4);
+      0, 0, 0, 'ftrees').setScale(1);
 
     this.mountains.setOrigin(0, 0);
     this.mountains.setScrollFactor(0);
@@ -107,7 +107,7 @@ export default class GameScene extends Phaser.Scene {
     this.ftrees.setOrigin(0, 0);
     this.ftrees.setScrollFactor(0);
     this.time.addEvent({
-      delay: 500000000,
+      delay: 20000,
       callback() {
         this.scene.pause();
         this.scene.start('MidDialogue');
@@ -117,8 +117,8 @@ export default class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'run',
       frames: this.anims.generateFrameNumbers('player', {
-        start: 14,
-        end: 15,
+        start: 5,
+        end: 8,
       }),
       frameRate: 8,
       repeat: -1,

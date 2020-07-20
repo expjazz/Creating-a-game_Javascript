@@ -5,7 +5,7 @@ export default class GameScene extends Phaser.Scene {
   constructor(gameObj) {
     super('Game');
     this.game = gameObj;
-    this.seconds = 60000;
+    this.seconds = 180000;
     this.gameOptions = {
       platformSpeedRange: [100, 100],
 
@@ -241,9 +241,16 @@ export default class GameScene extends Phaser.Scene {
 
     this.dying = false;
 
+    // countter for level
+    this.timeText = this.add.text(600, 16, '0: 0', {
+      fontSize: '32px',
+      fill: '#000',
+    });
+
     setInterval(() => {
       const time = this.setMinutes(this.seconds);
-      console.log(time);
+      this.timeText.text = time;
+      if (this.seconds === 0) { clearInterval(); }
       this.seconds -= 1000;
     }, 1000);
 

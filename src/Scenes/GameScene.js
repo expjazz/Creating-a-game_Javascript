@@ -39,7 +39,9 @@ export default class GameScene extends Phaser.Scene {
       jumps: 2,
 
       // % of probability a coin appears on the platform
-      coinPercent: 25,
+      coinPercent: 80,
+
+      spiderPercent: 90,
 
       // % of probability a fire appears on the platform
       firePercent: 25,
@@ -48,11 +50,12 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {
     // this.load.image('sky', '../assets/BG.png');
-    // this.load.image('platform', '../assets/platform.png');
+    this.load.image('platform', '../assets/platform.png');
     // this.load.image('ftrees', 'assets/ftrees.png');
     this.load.image('trees', 'assets/foreground.png');
     this.load.image('mountains', 'assets/back-buildings.png');
     this.load.image('mountain2', 'assets/far-buildings.png');
+    this.load.image('spider', 'assets/spider.png');
     // this.load.image('mountainfaar', 'assets/mountainfaar.png');
 
 
@@ -166,6 +169,17 @@ export default class GameScene extends Phaser.Scene {
       // once a platform is removed from the pool, it's added to the active platforms group
       removeCallback(platform) {
         platform.scene.platformGroup.add(platform);
+      },
+    });
+    this.spiderGroup = this.add.group({
+      removeCallback(spider) {
+        spider.scene.spiderPool.add(spider);
+      },
+    });
+
+    this.spiderPool = this.add.group({
+      removeCallback(spider) {
+        spider.scene.spiderGroup.add(spider);
       },
     });
 
@@ -307,6 +321,25 @@ export default class GameScene extends Phaser.Scene {
         }
       }
 
+      if (Phaser.Math.Between(1, 100) <= this.gameOptions.spiderPercent) {
+        if (this.spiderPool.getLength()) {
+          const spider = this.spiderPool.getFirst();
+          spider.x = posX;
+          spider.y = posY;
+          spider.alpha = 1;
+          spider.active = true;
+          spider.visible = true;
+          this.spiderPool.remove(spider);
+        } else {
+          const spider = this.physics.add.sprite(posX, posY - 20, 'spider');
+          spider.setScale(0.1);
+          spider.setImmovable(true);
+          spider.setVelocityX(platform.body.velocity.x);
+          spider.setDepth(2);
+          this.spiderGroup.add(spider);
+        }
+      }
+
       // // is there a fire over the platform?
       // if (Phaser.Math.Between(1, 100) <= this.gameOptions.firePercent) {
       //   if (this.firePool.getLength()) {
@@ -373,11 +406,11 @@ export default class GameScene extends Phaser.Scene {
       }
     }, this);
 
-    // recycling coins
-    this.coinGroup.getChildren().forEach((coin) => {
-      if (coin.x < -coin.displayWidth / 2) {
-        this.coinGroup.killAndHide(coin);
-        this.coinGroup.remove(coin);
+    // recycling spiders
+    this.spiderGroup.getChildren().forEach((spider) => {
+      if (spider.x < -spider.displayWidth / 2) {
+        this.spiderGroup.killAndHide(spider);
+        this.spiderGroup.remove(spider);
       }
     }, this);
 

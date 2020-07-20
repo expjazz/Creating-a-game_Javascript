@@ -2,8 +2,9 @@
 import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
-  constructor() {
+  constructor(gameObj) {
     super('Game');
+    this.game = gameObj;
     this.gameOptions = {
       platformSpeedRange: [100, 100],
 
@@ -257,6 +258,12 @@ export default class GameScene extends Phaser.Scene {
       this.scoreText.text = `score: ${parseInt(this.scoreText.text.split(':')[1]) + 10}`;
       coin.disableBody(true, true);
     });
+
+    this.physics.add.collider(this.player, this.spiderGroup, (player, spider) => {
+      this.physics.pause();
+      player.setTint(0xff0000);
+      this.game.gameOver = true;
+    });
     this.input.on('pointerdown', this.jump, this);
   }
 
@@ -331,14 +338,14 @@ export default class GameScene extends Phaser.Scene {
       if (Phaser.Math.Between(1, 100) <= this.gameOptions.spiderPercent) {
         if (this.spiderPool.getLength()) {
           const spider = this.spiderPool.getFirst();
-          spider.x = posX;
-          spider.y = posY;
+          spider.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+          spider.y = posY - 33;
           spider.alpha = 1;
           spider.active = true;
           spider.visible = true;
           this.spiderPool.remove(spider);
         } else {
-          const spider = this.physics.add.sprite(posX, posY - 20, 'spider');
+          const spider = this.physics.add.sprite((posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth)), posY - 31, 'spider');
           spider.setScale(0.1);
           spider.setImmovable(true);
           spider.setVelocityX(platform.body.velocity.x);

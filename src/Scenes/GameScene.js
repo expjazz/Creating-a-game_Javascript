@@ -94,7 +94,7 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     this.background.forEach((back) => {
-      this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(3.2);
+      this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(1);
       this[back].setOrigin(0, 0);
       this[back].setScrollFactor(0);
     });

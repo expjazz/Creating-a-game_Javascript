@@ -83,28 +83,31 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     this.mountains = this.add.tileSprite(0,
-      0, 400, 300, 'mountains');
+      0, 0, 0, 'mountains').setScale(4);
     this.mountainfaar = this.add.tileSprite(0,
-      0, 400, 300, 'mountain2');
+      0, 0, 0, 'mountain2').setScale(4);
     this.mountain2 = this.add.tileSprite(0,
-      0, 400, 300, 'mountainfaar');
-    this.trees = this.add.tileSprite(0,
-      0, 800, 600, 'trees');
+      0, 0, 0, 'mountainfaar').setScale(4);
+    this.trees = this.add.tileSprite(4,
+      0, 0, 0, 'trees').setScale(4);
     this.ftrees = this.add.tileSprite(0,
-      0, 800, 600, 'ftrees');
+      0, 0, 0, 'ftrees').setScale(4);
 
     this.mountains.setOrigin(0, 0);
     this.mountains.setScrollFactor(0);
-    this.mountainfaar.setOrigin(0, 0);
-    this.mountainfaar.setScrollFactor(0);
+    // this.mountainfaar.setOrigin(0, 0);
+    // this.mountainfaar.setScrollFactor(0);
+
     this.mountain2.setOrigin(0, 0);
     this.mountain2.setScrollFactor(0);
+
     this.trees.setOrigin(0, 0);
     this.trees.setScrollFactor(0);
+
     this.ftrees.setOrigin(0, 0);
     this.ftrees.setScrollFactor(0);
     this.time.addEvent({
-      delay: 5000,
+      delay: 500000000,
       callback() {
         this.scene.pause();
         this.scene.start('MidDialogue');
@@ -114,8 +117,8 @@ export default class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'run',
       frames: this.anims.generateFrameNumbers('player', {
-        start: 15,
-        end: 16,
+        start: 14,
+        end: 15,
       }),
       frameRate: 8,
       repeat: -1,
@@ -344,7 +347,7 @@ export default class GameScene extends Phaser.Scene {
     this.ftrees.tilePositionX -= 0.05;
     this.trees.tilePositionX -= 0.3;
     this.mountains.tilePositionX -= 0.75;
-    this.mountainfaar.tilePositionX -= 0.85;
+    // this.mountainfaar.tilePositionX -= 0.85;
     this.mountain2.tilePositionX -= 0.95;
 
 

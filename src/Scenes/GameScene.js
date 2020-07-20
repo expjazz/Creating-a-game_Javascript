@@ -5,6 +5,7 @@ export default class GameScene extends Phaser.Scene {
   constructor(gameObj) {
     super('Game');
     this.game = gameObj;
+    this.seconds = 60000;
     this.gameOptions = {
       platformSpeedRange: [100, 100],
 
@@ -240,6 +241,12 @@ export default class GameScene extends Phaser.Scene {
 
     this.dying = false;
 
+    setInterval(() => {
+      const time = this.setMinutes(this.seconds);
+      console.log(time);
+      this.seconds -= 1000;
+    }, 1000);
+
     this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, () => {
       if (!this.player.anims.isPlaying) {
         this.player.anims.play('run');
@@ -375,6 +382,13 @@ export default class GameScene extends Phaser.Scene {
       //   }
       // }
     }
+  }
+
+  setMinutes(mseconds) {
+    const seconds = mseconds / 1000;
+    const minutes = Math.floor(seconds / 60);
+    const time = `${minutes} : ${seconds % 60}`;
+    return time;
   }
 
   jump() {

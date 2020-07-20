@@ -110,7 +110,7 @@ export default class GameScene extends Phaser.Scene {
     // this.ftrees.setOrigin(0, 0);
     // this.ftrees.setScrollFactor(0);
     this.time.addEvent({
-      delay: 20000,
+      delay: 20000000000000,
       callback() {
         this.scene.pause();
         this.scene.start('MidDialogue');
@@ -153,7 +153,10 @@ export default class GameScene extends Phaser.Scene {
 
     // group with all active mountains.
     // this.mountainGroup = this.add.group();
-
+    this.scoreText = this.add.text(16, 16, 'score: 0', {
+      fontSize: '32px',
+      fill: '#000',
+    });
     // group with all active platforms.
     this.platformGroup = this.add.group({
 
@@ -250,6 +253,10 @@ export default class GameScene extends Phaser.Scene {
     //   this.physics.world.removeCollider(this.platformCollider);
     // }, null, this);
 
+    this.physics.add.overlap(this.player, this.coinGroup, (player, coin) => {
+      this.scoreText.text = `score: ${parseInt(this.scoreText.text.split(':')[1]) + 10}`;
+      coin.disableBody(true, true);
+    });
     this.input.on('pointerdown', this.jump, this);
   }
 
@@ -407,12 +414,20 @@ export default class GameScene extends Phaser.Scene {
     }, this);
 
     // recycling spiders
+    this.coinGroup.getChildren().forEach((coin) => {
+      if (coin.x < -coin.displayWidth / 2) {
+        this.coinGroup.killAndHide(coin);
+        this.coinGroup.remove(coin);
+      }
+    }, this);
+
     this.spiderGroup.getChildren().forEach((spider) => {
       if (spider.x < -spider.displayWidth / 2) {
         this.spiderGroup.killAndHide(spider);
         this.spiderGroup.remove(spider);
       }
     }, this);
+
 
     // recycling fire
     // this.fireGroup.getChildren().forEach(function (fire) {

@@ -262,7 +262,7 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.spiderGroup, (player, spider) => {
       this.physics.pause();
       player.setTint(0xff0000);
-      this.game.gameOver = true;
+      this.scene.start('GameOver');
     });
     this.input.on('pointerdown', this.jump, this);
   }

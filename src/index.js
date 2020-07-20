@@ -8,6 +8,7 @@ import OptionsScene from './Scenes/OptionsScene';
 import CreditsScene from './Scenes/CreditsScene';
 import IntroductionScene from './Scenes/IntroductionScene';
 import MidDialogue from './Scenes/MidDialogue';
+import GameOver from './Scenes/GameOver';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -22,6 +23,7 @@ class Game extends Phaser.Game {
     this.scene.add('Introduction', IntroductionScene);
     this.scene.add('Game', new GameScene(this));
     this.scene.add('MidDialogue', new MidDialogue('title', 'content'));
+    this.scene.add('GameOver', GameOver);
     this.scene.start('Boot');
   }
 }

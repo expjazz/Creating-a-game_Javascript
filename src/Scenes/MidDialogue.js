@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
 export default class MidDialogue extends Phaser.Scene {
-  constructor(title, content, nextScene) {
-    super('DialogueOne');
+  constructor(scene, title, content, nextScene) {
+    super(scene);
     this.title = title;
     this.content = content;
     this.nextScene = nextScene;

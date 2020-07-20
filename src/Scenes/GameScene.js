@@ -4,9 +4,10 @@ import 'phaser';
 export default class GameScene extends Phaser.Scene {
   constructor(background, level, scene) {
     super('Game');
-    this.game = gameObj;
-    this.seconds = 180000;
+    // this.game = gameObj;
+    this.seconds = 60000;
     this.background = background;
+    this.parallax = 0;
     this.gameOptions = {
       platformSpeedRange: [100, 100],
 
@@ -52,12 +53,16 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    // console.log(this.background);
     // this.load.image('sky', '../assets/BG.png');
+    this.background.forEach((layer) => {
+      this.load.image(layer, `assets/${layer}.png`);
+    });
     this.load.image('platform', '../assets/platform.png');
-    // this.load.image('ftrees', 'assets/ftrees.png');
-    this.load.image('trees', 'assets/foreground.png');
-    this.load.image('mountains', 'assets/back-buildings.png');
-    this.load.image('mountain2', 'assets/far-buildings.png');
+    // // this.load.image('ftrees', 'assets/ftrees.png');
+    // this.load.image('trees', 'assets/foreground.png');
+    // this.load.image('mountains', 'assets/back-buildings.png');
+    // this.load.image('mountain2', 'assets/far-buildings.png');
     this.load.image('spider', 'assets/spider.png');
     // this.load.image('mountainfaar', 'assets/mountainfaar.png');
 
@@ -88,27 +93,33 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.mountains = this.add.tileSprite(0,
-      0, 0, 0, 'mountains').setScale(3.2);
-    // this.mountainfaar = this.add.tileSprite(0,
-    //   0, 0, 0, 'mountain2').setScale(1);
-    this.mountain2 = this.add.tileSprite(0,
-      0, 0, 0, 'mountainfaar').setScale(3.2);
-    this.trees = this.add.tileSprite(4,
-      0, 0, 0, 'trees').setScale(3.2);
-    // this.ftrees = this.add.tileSprite(0,
-    // 0, 0, 0, 'ftrees').setScale(1);
+    this.background.forEach((back) => {
+      this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(3.2);
+      this[back].setOrigin(0, 0);
+      this[back].setScrollFactor(0);
+    });
+    console.log(this);
+    // this.mountains = this.add.tileSprite(0,
+    //   0, 0, 0, 'mountains').setScale(3.2);
+    // // this.mountainfaar = this.add.tileSprite(0,
+    // //   0, 0, 0, 'mountain2').setScale(1);
+    // this.mountain2 = this.add.tileSprite(0,
+    //   0, 0, 0, 'mountainfaar').setScale(3.2);
+    // this.trees = this.add.tileSprite(4,
+    //   0, 0, 0, 'trees').setScale(3.2);
+    // // this.ftrees = this.add.tileSprite(0,
+    // // 0, 0, 0, 'ftrees').setScale(1);
 
-    this.mountains.setOrigin(0, 0);
-    this.mountains.setScrollFactor(0);
-    // this.mountainfaar.setOrigin(0, 0);
-    // this.mountainfaar.setScrollFactor(0);
+    // this.mountains.setOrigin(0, 0);
+    // this.mountains.setScrollFactor(0);
+    // // this.mountainfaar.setOrigin(0, 0);
+    // // this.mountainfaar.setScrollFactor(0);
 
-    this.mountain2.setOrigin(0, 0);
-    this.mountain2.setScrollFactor(0);
+    // this.mountain2.setOrigin(0, 0);
+    // this.mountain2.setScrollFactor(0);
 
-    this.trees.setOrigin(0, 0);
-    this.trees.setScrollFactor(0);
+    // this.trees.setOrigin(0, 0);
+    // this.trees.setScrollFactor(0);
 
     // this.ftrees.setOrigin(0, 0);
     // this.ftrees.setScrollFactor(0);
@@ -248,12 +259,13 @@ export default class GameScene extends Phaser.Scene {
       fill: '#000',
     });
 
-    setInterval(() => {
+    this.idInterval = setInterval(() => {
       const time = this.setMinutes(this.seconds);
       this.timeText.text = time;
       if (this.seconds === 0) { clearInterval(); }
       this.seconds -= 1000;
     }, 1000);
+
 
     this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, () => {
       if (!this.player.anims.isPlaying) {
@@ -274,10 +286,13 @@ export default class GameScene extends Phaser.Scene {
       coin.disableBody(true, true);
     });
 
+    // dying if iit  thouchess the spider
+
     this.physics.add.collider(this.player, this.spiderGroup, (player, spider) => {
       this.physics.pause();
       player.setTint(0xff0000);
       this.scene.start('GameOver');
+      clearInterval(this.idInterval);
     });
     this.input.on('pointerdown', this.jump, this);
   }
@@ -400,6 +415,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   jump() {
+    console.log(this);
     if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps))) {
       if (this.player.body.touching.down) {
         this.playerJumps = 0;
@@ -413,11 +429,20 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update() {
+    if (this.seconds === 0) clearInterval(this.idInterval);
+
     // this.ftrees.tilePositionX -= 0.05;
-    this.trees.tilePositionX -= 0.3;
-    this.mountains.tilePositionX -= 0.75;
-    // this.mountainfaar.tilePositionX -= 0.85;
-    this.mountain2.tilePositionX -= 0.95;
+
+    this.parallax = 0;
+    this.background.forEach((back) => {
+      this.parallax -= 0.22;
+      // this[back].tilePositionX = 0;
+      this[back].tilePositionX -= this.parallax;
+    });
+    // this.trees.tilePositionX -= 0.3;
+    // this.mountains.tilePositionX -= 0.75;
+    // // this.mountainfaar.tilePositionX -= 0.85;
+    // this.mountain2.tilePositionX -= 0.95;
 
 
     // game over

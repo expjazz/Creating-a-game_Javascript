@@ -83,13 +83,13 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     this.mountains = this.add.tileSprite(0,
-      0, 0, 0, 'mountains').setScale(1);
+      0, 0, 0, 'mountains').setScale(3.2);
     // this.mountainfaar = this.add.tileSprite(0,
     //   0, 0, 0, 'mountain2').setScale(1);
     this.mountain2 = this.add.tileSprite(0,
-      0, 0, 0, 'mountainfaar').setScale(1);
+      0, 0, 0, 'mountainfaar').setScale(3.2);
     this.trees = this.add.tileSprite(4,
-      0, 0, 0, 'trees').setScale(1);
+      0, 0, 0, 'trees').setScale(3.2);
     // this.ftrees = this.add.tileSprite(0,
     // 0, 0, 0, 'ftrees').setScale(1);
 

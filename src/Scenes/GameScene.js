@@ -2,10 +2,11 @@
 import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(background, level, scene) {
+  constructor(background, level, scene, selfScale = 1) {
     super('Game');
     // this.game = gameObj;
     this.seconds = 60000;
+    this.selfScale = selfScale;
     this.background = background;
     this.parallax = 0;
     this.gameOptions = {
@@ -94,7 +95,7 @@ export default class GameScene extends Phaser.Scene {
 
   create() {
     this.background.forEach((back) => {
-      this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(1);
+      this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(this.selfScale);
       this[back].setOrigin(0, 0);
       this[back].setScrollFactor(0);
     });

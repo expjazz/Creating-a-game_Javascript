@@ -9,7 +9,5 @@ export default {
   backgroundColor: '#777',
   physics: {
     default: 'arcade',
-
-
   },
 };

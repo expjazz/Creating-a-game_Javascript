@@ -3,9 +3,9 @@ import 'phaser';
 import prop from '../Config/gameProperties';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(scene, background, enemy, nextScene, seconds, selfScale = 1) {
-    super(scene);
-    this.scene = scene;
+  constructor(selfScene, background, enemy, nextScene, seconds, selfScale = 1) {
+    super(selfScene);
+    this.selfScene = selfScene;
     this.seconds = seconds;
     this.enemy = enemy;
     this.selfScale = selfScale;
@@ -52,7 +52,7 @@ export default class GameScene extends Phaser.Scene {
       spiderPercent: 90,
 
       // % of probability a fire appears on the platform
-      firePercent: 25,
+      firePercent: 90,
     };
   }
 
@@ -62,6 +62,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    console.log(this.selfScene);
+
     this.background.forEach((back) => {
       this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(this.selfScale);
       this[back].setOrigin(0, 0);
@@ -286,7 +288,7 @@ export default class GameScene extends Phaser.Scene {
         }
       }
 
-      if (Phaser.Math.Between(1, 100) <= this.gameOptions.spiderPercent) {
+      if (this.enemy !== 'fire' && Phaser.Math.Between(1, 100) <= this.gameOptions.spiderPercent) {
         if (this.spiderPool.getLength()) {
           const spider = this.spiderPool.getFirst();
           spider.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
@@ -387,12 +389,14 @@ export default class GameScene extends Phaser.Scene {
       }
     }, this);
 
-    this.spiderGroup.getChildren().forEach((spider) => {
-      if (spider.x < -spider.displayWidth / 2) {
-        this.spiderGroup.killAndHide(spider);
-        this.spiderGroup.remove(spider);
-      }
-    }, this);
+    if (this.enemy !== 'fire') {
+      this.spiderGroup.getChildren().forEach((spider) => {
+        if (spider.x < -spider.displayWidth / 2) {
+          this.spiderGroup.killAndHide(spider);
+          this.spiderGroup.remove(spider);
+        }
+      }, this);
+    }
 
 
     if (this.enemy === 'fire') {

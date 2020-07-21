@@ -89,10 +89,10 @@ export default class PreloaderScene extends Phaser.Scene {
       frameHeight: 64,
     });
 
-    // this.load.spritesheet('fire', 'assets/fire.png', {
-    //   frameWidth: 40,
-    //   frameHeight: 70,
-    // });
+    this.load.spritesheet('fire', 'assets/fire.png', {
+      frameWidth: 40,
+      frameHeight: 70,
+    });
 
 
     this.load.spritesheet('player', 'assets/dude.png', {

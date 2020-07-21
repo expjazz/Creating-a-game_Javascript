@@ -18,7 +18,6 @@ export default class GameOver extends Phaser.Scene {
 
     this.gameText = this.add.text(0, 0, 'Want to restart the same level?', { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(this.gameText, this.gameButton);
-    console.log(this.previousScene.key);
     this.gameButton.on('pointerdown', (pointer) => {
       this.scene.start(this.previousScene.key);
     });

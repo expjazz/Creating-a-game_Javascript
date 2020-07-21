@@ -20,10 +20,6 @@ export default class MidDialogue extends Phaser.Scene {
   }
 
   create() {
-    console.log('a');
-    console.log(this.selfScene);
-    console.log(this.nextScene);
-    console.log(this.title, this.content);
     const selfScene = this;
     this.Alert(selfScene, this.title, this.content)
       .then(() => this.scene.start(this.nextScene));
@@ -31,7 +27,7 @@ export default class MidDialogue extends Phaser.Scene {
 
 
   CreateAlertDialog(scene) {
-    const dialog = scene.rexUI.add.dialog({
+    this.dialog = scene.rexUI.add.dialog({
       width: 300,
       background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x1565c0),
 
@@ -46,10 +42,13 @@ export default class MidDialogue extends Phaser.Scene {
           top: 10,
           bottom: 10,
         },
+        align: 'center',
       }),
 
-      content: scene.add.text(0, 0, '', {
+      content: scene.add.text(200, 0, '', {
         fontSize: '24px',
+        wordwrap: { width: 1000 },
+        align: 'center',
       }),
 
       actions: [
@@ -57,7 +56,7 @@ export default class MidDialogue extends Phaser.Scene {
           background: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x5e92f3),
 
           text: scene.add.text(0, 0, 'OK', {
-            fontSize: '24px',
+            fontSize: '12px',
           }),
 
           space: {
@@ -95,7 +94,7 @@ export default class MidDialogue extends Phaser.Scene {
         button.getElement('background').setStrokeStyle();
       });
 
-    return dialog;
+    return this.dialog;
   }
 
   SetAlertDialog(dialog, title, content) {

@@ -13,6 +13,7 @@ import GameOver from './Scenes/GameOver';
 import back from './Scenes/background';
 import saveUserRecord from './Scenes/saveUserRecord';
 import api from './Config/apiHandler';
+import lines from './Scenes/dialogues';
 
 class Game extends Phaser.Game {
   constructor() {
@@ -32,11 +33,11 @@ class Game extends Phaser.Game {
     this.scene.add('One', new GameScene('One', back.background[0], 'rat', 'DialogueOne', 1500, 3.2));
     this.scene.add('PhaseTwo', new GameScene('PhaseTwo', back.background[1], 'spider', 'DialogueTwo', 1500));
     this.scene.add('PhaseThree', new GameScene('PhaseThree', back.background[2], 'fire', 'DialogueThree', 15000));
-    this.scene.add('DialogueIntro', new MidDialogue('DialogueIntro', 'title', 'content', 'One'));
+    this.scene.add('DialogueIntro', new MidDialogue('DialogueIntro', lines.dialogues[0][0], lines.dialogues[0][1], 'One'));
 
-    this.scene.add('DialogueOne', new MidDialogue('DialogueOne', 'title', 'content', 'PhaseTwo'));
-    this.scene.add('DialogueTwo', new MidDialogue('DialogueTwo', 'two', 'contentTwo', 'PhaseThree'));
-    this.scene.add('DialogueThree', new MidDialogue('DialogueThree', 'title', 'content', 'Credits'));
+    this.scene.add('DialogueOne', new MidDialogue('DialogueOne', lines.dialogues[1][0], lines.dialogues[1][1], 'PhaseTwo'));
+    this.scene.add('DialogueTwo', new MidDialogue('DialogueTwo', lines.dialogues[2][0], lines.dialogues[2][1], 'PhaseThree'));
+    this.scene.add('DialogueThree', new MidDialogue('DialogueThree', lines.dialogues[3][0], lines.dialogues[3][1], 'Credits'));
 
     this.scene.add('GameOver', GameOver);
     this.scene.start('Boot');

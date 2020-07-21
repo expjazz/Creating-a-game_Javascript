@@ -17,8 +17,8 @@ export default class MidDialogue extends Phaser.Scene {
   }
 
   create() {
-    const scene = this;
-    Alert(scene, this.title, this.content)
+    const selfScene = this;
+    Alert(selfScene, this.title, this.content)
       .then(() => this.scene.start(this.nextScene));
   }
 

@@ -95,7 +95,6 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    console.log(this.nextScene);
     this.background.forEach((back) => {
       this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(this.selfScale);
       this[back].setOrigin(0, 0);

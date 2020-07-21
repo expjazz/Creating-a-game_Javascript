@@ -66,10 +66,13 @@ export default class GameScene extends Phaser.Scene {
   create() {
     if (this.selfScene === 'One') {
       prop.gameProperty.currentPhase = 1;
+      this.speedIncrease = prop.gameProperty.phaseOneSpeed;
     } else if (this.selfScene === 'PhaseTwo') {
       prop.gameProperty.currentPhase = 2;
+      this.speedIncrease = prop.gameProperty.phaseTwoSpeed;
     } else {
       prop.gameProperty.currentPhase = 3;
+      this.speedIncrease = prop.gameProperty.phaseThreeSpeed;
     }
     this.background.forEach((back) => {
       this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(this.selfScale);

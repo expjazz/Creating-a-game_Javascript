@@ -1,3 +1,3 @@
-const dialogues = [];
+const dialogues = [['Welcome to the Game', 'Welcome to the Save the Pets game! To go to the end, jump to every obstacle you see. The goal is to get to the end of all the phases without falling off the platforms or touching the obstacles. Each coin has the value of ten points, so grab the most you can to get the most point. After every level you get a bonus, so use it with care! Good luck'], ['On to the next one', 'Congratulations on this level! As a bonus, you get the ability of one triple jump. Use it well.'], ['You are almost there!', 'Congratulations on this level! As a bonus, you get the ability of one triple jump. Use it well.'], ['You have finished! Congrats.', 'Now All the pets are safe. Enjoy the benefits of your kindness!']];
 
 export default { dialogues };

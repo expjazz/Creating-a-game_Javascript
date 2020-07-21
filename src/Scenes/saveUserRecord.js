@@ -3,10 +3,10 @@ import 'phaser';
 
 export default class saveUserRecord extends Phaser.Scene {
   constructor() {
-    console.log('fromSaveConst');
     super({
       key: 'rexUI',
     });
+    this.count = 1;
   }
 
   preload() {
@@ -19,7 +19,7 @@ export default class saveUserRecord extends Phaser.Scene {
   }
 
   create() {
-    console.log('userText');
+    const keyObj = this.input.keyboard.addKey('Enter');
     const printText = this.add.rexBBCodeText(400, 300, 'abc', {
       color: 'yellow',
       fontSize: '24px',
@@ -30,8 +30,10 @@ export default class saveUserRecord extends Phaser.Scene {
     })
       .setOrigin(0.5)
       .setInteractive()
-      .on('pointerdown', function () {
+      .on('pointerdown', () => {
+        this.count = 0;
         this.plugins.get('rextexteditplugin').edit(printText);
+        keyObj.on('down', () => { if (this.count === 0) console.log('is down'); this.count = 1; });
       }, this);
 
     this.add.text(0, 580, 'Click text to start editing, press enter key to stop editing');

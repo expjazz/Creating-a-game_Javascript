@@ -3,16 +3,23 @@ import 'phaser';
 
 export default class saveUserRecord extends Phaser.Scene {
   constructor() {
+    console.log('fromSaveConst');
     super({
       key: 'rexUI',
     });
   }
 
   preload() {
+    let url;
+    url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js';
+    this.load.plugin('rexbbcodetextplugin', url, true);
 
+    url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexteditplugin.min.js';
+    this.load.plugin('rextexteditplugin', url, true);
   }
 
   create() {
+    console.log('userText');
     const printText = this.add.rexBBCodeText(400, 300, 'abc', {
       color: 'yellow',
       fontSize: '24px',

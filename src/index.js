@@ -22,7 +22,7 @@ class Game extends Phaser.Game {
     this.scene.add('Preloader', new PreloaderScene(back.background));
     this.scene.add('Options', OptionsScene);
     this.scene.add('Credits', CreditsScene);
-    this.scene.add('saveUserRecord', saveUserRecord);
+    this.scene.add('rexUI', saveUserRecord);
 
     this.scene.add('Introduction', IntroductionScene);
     this.scene.add('One', new GameScene('One', back.background[0], 'rat', 'DialogueOne', 1500, 3.2));

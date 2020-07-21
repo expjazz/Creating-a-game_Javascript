@@ -279,29 +279,6 @@ export default class GameScene extends Phaser.Scene {
     this.input.on('pointerdown', this.jump, this);
   }
 
-  // addMountains() {
-  //   const rightmostMountain = this.getRightmostMountain();
-  //   if (rightmostMountain < 800 * 2) {
-  //     const mountain = this.physics.add.sprite(rightmostMountain + Phaser.Math.Between(100, 350), 400 + Phaser.Math.Between(0, 100), 'mountain');
-  //     mountain.setOrigin(0.5, 1);
-  //     mountain.body.setVelocityX(this.gameOptions.mountainSpeed * -1);
-  //     this.mountainGroup.add(mountain);
-  //     if (Phaser.Math.Between(0, 1)) {
-  //       mountain.setDepth(1);
-  //     }
-  //     mountain.setFrame(Phaser.Math.Between(0, 3));
-  //     this.addMountains();
-  //   }
-  // }
-
-  // getRightmostMountain() {
-  //   let rightmostMountain = -200;
-  //   this.mountainGroup.getChildren().forEach((mountain) => {
-  //     rightmostMountain = Math.max(rightmostMountain, mountain.x);
-  //   });
-  //   return rightmostMountain;
-  // }
-
   addPlatform(platformWidth, posX, posY) {
     this.addedPlatforms += 1;
     let platform;
@@ -325,9 +302,7 @@ export default class GameScene extends Phaser.Scene {
     }
     this.nextPlatformDistance = Phaser.Math.Between(this.gameOptions.spawnRange[0], this.gameOptions.spawnRange[1]);
 
-    // if this is not the starting platform...
     if (this.addedPlatforms > 1) {
-      // is there a coin over the platform?
       if (Phaser.Math.Between(1, 100) <= this.gameOptions.coinPercent) {
         if (this.coinPool.getLength()) {
           const coin = this.coinPool.getFirst();
@@ -406,7 +381,6 @@ export default class GameScene extends Phaser.Scene {
       this.player.setVelocityY(this.gameOptions.jumpForce * -1);
       this.playerJumps += 1;
 
-      // stops animation
       this.player.anims.stop();
     }
   }
@@ -414,23 +388,17 @@ export default class GameScene extends Phaser.Scene {
   update() {
     if (this.seconds === 0) clearInterval(this.idInterval);
 
-    // this.ftrees.tilePositionX -= 0.05;
 
     this.parallax = 0;
     this.background.forEach((back) => {
       this.parallax -= 0.22;
-      // this[back].tilePositionX = 0;
       this[back].tilePositionX -= this.parallax;
     });
-    // this.trees.tilePositionX -= 0.3;
-    // this.mountains.tilePositionX -= 0.75;
-    // // this.mountainfaar.tilePositionX -= 0.85;
-    // this.mountain2.tilePositionX -= 0.95;
 
 
     // game over
     if (this.player.y > 600) {
-      this.scene.start('PlayGame');
+      this.scene.start('Title');
     }
 
     this.player.x = this.gameOptions.playerStartPosition;

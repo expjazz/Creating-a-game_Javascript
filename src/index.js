@@ -12,11 +12,15 @@ import MidDialogue from './Scenes/MidDialogue';
 import GameOver from './Scenes/GameOver';
 import back from './Scenes/background';
 import saveUserRecord from './Scenes/saveUserRecord';
+import api from './Config/apiHandler';
 
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-
+    // api.apiHandlerPostFirst();
+    // api.postScore('Mark Adams', 2);
+    // api.getScore();
+    // api.apiExport('John Doe', 1);
     this.scene.add('Title', TitleScene);
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', new PreloaderScene(back.background));

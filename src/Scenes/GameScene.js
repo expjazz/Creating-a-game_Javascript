@@ -1,11 +1,14 @@
 /* eslint-disable no-undef */
 import 'phaser';
 import prop from '../Config/gameProperties';
+import GameOver from './GameOver';
 
 export default class GameScene extends Phaser.Scene {
   constructor(scene, background, enemy, nextScene, seconds, selfScale = 1) {
     super(scene);
+    console.log(nextScene);
     // this.game = gameObj;
+    this.scene = scene;
     this.seconds = seconds;
     this.enemy = enemy;
     this.selfScale = selfScale;
@@ -67,35 +70,12 @@ export default class GameScene extends Phaser.Scene {
       this[back].setOrigin(0, 0);
       this[back].setScrollFactor(0);
     });
-    // this.mountains = this.add.tileSprite(0,
-    //   0, 0, 0, 'mountains').setScale(3.2);
-    // // this.mountainfaar = this.add.tileSprite(0,
-    // //   0, 0, 0, 'mountain2').setScale(1);
-    // this.mountain2 = this.add.tileSprite(0,
-    //   0, 0, 0, 'mountainfaar').setScale(3.2);
-    // this.trees = this.add.tileSprite(4,
-    //   0, 0, 0, 'trees').setScale(3.2);
-    // // this.ftrees = this.add.tileSprite(0,
-    // // 0, 0, 0, 'ftrees').setScale(1);
 
-    // this.mountains.setOrigin(0, 0);
-    // this.mountains.setScrollFactor(0);
-    // // this.mountainfaar.setOrigin(0, 0);
-    // // this.mountainfaar.setScrollFactor(0);
-
-    // this.mountain2.setOrigin(0, 0);
-    // this.mountain2.setScrollFactor(0);
-
-    // this.trees.setOrigin(0, 0);
-    // this.trees.setScrollFactor(0);
-
-    // this.ftrees.setOrigin(0, 0);
-    // this.ftrees.setScrollFactor(0);
     this.time.addEvent({
       delay: this.seconds,
       callback() {
         this.scene.pause();
-
+        clearInterval(this.idInterval);
         this.scene.start(this.nextScene);
       },
       callbackScope: this,
@@ -110,7 +90,6 @@ export default class GameScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    // setting coin animation
     this.anims.create({
       key: 'rotate',
       frames: this.anims.generateFrameNumbers('coin', {
@@ -134,56 +113,45 @@ export default class GameScene extends Phaser.Scene {
     });
 
 
-    // setting fire animation
-    // this.anims.create({
-    //   key: 'burn',
-    //   frames: this.anims.generateFrameNumbers('fire', {
-    //     start: 0,
-    //     end: 4,
-    //   }),
-    //   frameRate: 15,
-    //   repeat: -1,
-    // });
+    this.anims.create({
+      key: 'burn',
+      frames: this.anims.generateFrameNumbers('fire', {
+        start: 0,
+        end: 4,
+      }),
+      frameRate: 15,
+      repeat: -1,
+    });
 
 
-    // group with all active mountains.
-    // this.mountainGroup = this.add.group();
     this.scoreText = this.add.text(16, 16, `score: ${prop.gameProperty.score}`, {
       fontSize: '32px',
       fill: '#000',
     });
-    // group with all active platforms.
     this.platformGroup = this.add.group({
 
-      // once a platform is removed, it's added to the pool
       removeCallback(platform) {
         platform.scene.platformPool.add(platform);
       },
     });
 
-    // platform pool
     this.platformPool = this.add.group({
 
-      // once a platform is removed from the pool, it's added to the active platforms group
       removeCallback(platform) {
         platform.scene.platformGroup.add(platform);
       },
     });
 
 
-    // group with all active coins.
     this.coinGroup = this.add.group({
 
-      // once a coin is removed, it's added to the pool
       removeCallback(coin) {
         coin.scene.coinPool.add(coin);
       },
     });
 
-    // coin pool
     this.coinPool = this.add.group({
 
-      // once a coin is removed from the pool, it's added to the active coins group
       removeCallback(coin) {
         coin.scene.coinGroup.add(coin);
       },
@@ -198,7 +166,6 @@ export default class GameScene extends Phaser.Scene {
         },
       });
 
-      // fire pool
       this.firePool = this.add.group({
 
         removeCallback(fire) {
@@ -367,8 +334,8 @@ export default class GameScene extends Phaser.Scene {
 
   setMinutes(mseconds) {
     this.newSeconds = mseconds / 1000;
-    const minutes = Math.floor(newSeconds / 60);
-    const time = `${minutes} : ${newSeconds % 60}`;
+    const minutes = Math.floor(this.newSeconds / 60);
+    const time = `${minutes} : ${this.newSeconds % 60}`;
     return time;
   }
 
@@ -396,14 +363,12 @@ export default class GameScene extends Phaser.Scene {
     });
 
 
-    // game over
     if (this.player.y > 600) {
-      this.scene.start('Title');
+      this.scene.start('GameOver', { previousScene: this.scene });
     }
 
     this.player.x = this.gameOptions.playerStartPosition;
 
-    // recycling platforms
     let minDistance = 600;
     let rightmostPlatformHeight = 0;
     this.platformGroup.getChildren().forEach((platform) => {
@@ -418,7 +383,6 @@ export default class GameScene extends Phaser.Scene {
       }
     }, this);
 
-    // recycling spiders
     this.coinGroup.getChildren().forEach((coin) => {
       if (coin.x < -coin.displayWidth / 2) {
         this.coinGroup.killAndHide(coin);
@@ -434,28 +398,16 @@ export default class GameScene extends Phaser.Scene {
     }, this);
 
 
-    // recycling fire
-    // this.fireGroup.getChildren().forEach(function (fire) {
-    //   if (fire.x < -fire.displayWidth / 2) {
-    //     this.fireGroup.killAndHide(fire);
-    //     this.fireGroup.remove(fire);
-    //   }
-    // }, this);
+    if (this.enemy === 'fire') {
+      this.fireGroup.getChildren().forEach(function (fire) {
+        if (fire.x < -fire.displayWidth / 2) {
+          this.fireGroup.killAndHide(fire);
+          this.fireGroup.remove(fire);
+        }
+      }, this);
+    }
 
-    // // recycling mountains
-    // this.mountainGroup.getChildren().forEach(function (mountain) {
-    //   if (mountain.x < -mountain.displayWidth) {
-    //     const rightmostMountain = this.getRightmostMountain();
-    //     mountain.x = rightmostMountain + Phaser.Math.Between(100, 350);
-    //     mountain.y = 400 + Phaser.Math.Between(0, 100);
-    //     mountain.setFrame(Phaser.Math.Between(0, 3));
-    //     if (Phaser.Math.Between(0, 1)) {
-    //       mountain.setDepth(1);
-    //     }
-    //   }
-    // }, this);
 
-    // adding new platforms
     if (minDistance > this.nextPlatformDistance) {
       const nextPlatformWidth = Phaser.Math.Between(this.gameOptions.platformSizeRange[0], this.gameOptions.platformSizeRange[1]);
       const platformRandomHeight = this.gameOptions.platformHeighScale * Phaser.Math.Between(this.gameOptions.platformHeightRange[0], this.gameOptions.platformHeightRange[1]);

@@ -6,17 +6,21 @@ export default class GameOver extends Phaser.Scene {
     super('GameOver');
   }
 
+  init(data) {
+    this.previousScene = data.previousScene;
+  }
+
   create() {
     // Game
 
     this.gameButton = this.add.sprite(100, 200, 'blueButton1').setInteractive();
     this.centerButton(this.gameButton, 1);
 
-    this.gameText = this.add.text(0, 0, 'Play', { fontSize: '32px', fill: '#fff' });
+    this.gameText = this.add.text(0, 0, 'Want to restart the same level?', { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(this.gameText, this.gameButton);
-
+    console.log(this.previousScene.key);
     this.gameButton.on('pointerdown', (pointer) => {
-      this.scene.start('Introduction');
+      this.scene.start(this.previousScene.key);
     });
 
     // Options

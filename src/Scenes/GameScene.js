@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import 'phaser';
+import prop from '../Config/gameProperties';
 
 export default class GameScene extends Phaser.Scene {
   constructor(scene, background, enemy, nextScene, seconds, selfScale = 1) {
@@ -12,17 +13,17 @@ export default class GameScene extends Phaser.Scene {
     this.nextScene = nextScene;
     this.parallax = 0;
     this.gameOptions = {
-      platformSpeedRange: [100, 300],
+      platformSpeedRange: [100, 100],
 
       // mountain speed, in pixels per second
       mountainSpeed: 80,
 
       // spawn range, how far should be the rightmost platform from the right edge
       // before next platform spawns, in pixels
-      spawnRange: [200, 300],
+      spawnRange: [80, 100],
 
       // platform width range, in pixels
-      platformSizeRange: [50, 300],
+      platformSizeRange: [300, 300],
 
       // a height range between rightmost platform and next platform to be spawned
       platformHeightRange: [-5, 5],
@@ -127,7 +128,7 @@ export default class GameScene extends Phaser.Scene {
         start: 0,
         end: 6,
       }),
-      frameRate: 8,
+      frameRate: 15,
       yoyo: true,
       repeat: -1,
     });
@@ -147,7 +148,7 @@ export default class GameScene extends Phaser.Scene {
 
     // group with all active mountains.
     // this.mountainGroup = this.add.group();
-    this.scoreText = this.add.text(16, 16, 'score: 0', {
+    this.scoreText = this.add.text(16, 16, `score: ${prop.gameProperty.score}`, {
       fontSize: '32px',
       fill: '#000',
     });
@@ -168,17 +169,7 @@ export default class GameScene extends Phaser.Scene {
         platform.scene.platformGroup.add(platform);
       },
     });
-    this.spiderGroup = this.add.group({
-      removeCallback(spider) {
-        spider.scene.spiderPool.add(spider);
-      },
-    });
 
-    this.spiderPool = this.add.group({
-      removeCallback(spider) {
-        spider.scene.spiderGroup.add(spider);
-      },
-    });
 
     // group with all active coins.
     this.coinGroup = this.add.group({
@@ -198,26 +189,35 @@ export default class GameScene extends Phaser.Scene {
       },
     });
 
-    // // group with all active firecamps.
-    // this.fireGroup = this.add.group({
 
-    //   // once a firecamp is removed, it's added to the pool
-    //   removeCallback(fire) {
-    //     fire.scene.firePool.add(fire);
-    //   },
-    // });
+    if (this.enemy === 'fire') {
+      this.fireGroup = this.add.group({
 
-    // // fire pool
-    // this.firePool = this.add.group({
+        removeCallback(fire) {
+          fire.scene.firePool.add(fire);
+        },
+      });
 
-    //   // once a fire is removed from the pool, it's added to the active fire group
-    //   removeCallback(fire) {
-    //     fire.scene.fireGroup.add(fire);
-    //   },
-    // });
+      // fire pool
+      this.firePool = this.add.group({
 
-    // this.addMountains();
-    // this.add.image(400, 300, 'sky');
+        removeCallback(fire) {
+          fire.scene.fireGroup.add(fire);
+        },
+      });
+    } else {
+      this.spiderGroup = this.add.group({
+        removeCallback(spider) {
+          spider.scene.spiderPool.add(spider);
+        },
+      });
+
+      this.spiderPool = this.add.group({
+        removeCallback(spider) {
+          spider.scene.spiderGroup.add(spider);
+        },
+      });
+    }
 
 
     this.addedPlatforms = 0;
@@ -234,7 +234,7 @@ export default class GameScene extends Phaser.Scene {
     this.dying = false;
 
     // countter for level
-    this.timeText = this.add.text(600, 16, '0: 0', {
+    this.timeText = this.add.text(550, 16, 'Good Luck!', {
       fontSize: '32px',
       fill: '#000',
     });
@@ -253,16 +253,18 @@ export default class GameScene extends Phaser.Scene {
       }
     }, null, this);
 
-    // this.physics.add.overlap(this.player, this.fireGroup, (player, fire) => {
-    //   this.dying = true;
-    //   this.player.anims.stop();
-    //   this.player.setFrame(2);
-    //   this.player.body.setVelocityY(-200);
-    //   this.physics.world.removeCollider(this.platformCollider);
-    // }, null, this);
+    this.physics.add.overlap(this.player, this.fireGroup, (player, fire) => {
+      this.dying = true;
+      this.player.anims.stop();
+      this.player.setFrame(2);
+      this.player.body.setVelocityY(-200);
+      this.physics.world.removeCollider(this.platformCollider);
+    }, null, this);
 
     this.physics.add.overlap(this.player, this.coinGroup, (player, coin) => {
-      this.scoreText.text = `score: ${parseInt(this.scoreText.text.split(':')[1]) + 10}`;
+      prop.gameProperty.score += 10;
+      this.scoreText.text = `score: ${prop.gameProperty.score}`;
+
       coin.disableBody(true, true);
     });
 
@@ -366,33 +368,32 @@ export default class GameScene extends Phaser.Scene {
         }
       }
 
-      // // is there a fire over the platform?
-      // if (Phaser.Math.Between(1, 100) <= this.gameOptions.firePercent) {
-      //   if (this.firePool.getLength()) {
-      //     const fire = this.firePool.getFirst();
-      //     fire.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
-      //     fire.y = posY - 46;
-      //     fire.alpha = 1;
-      //     fire.active = true;
-      //     fire.visible = true;
-      //     this.firePool.remove(fire);
-      //   } else {
-      //     const fire = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), posY - 46, 'fire');
-      //     fire.setImmovable(true);
-      //     fire.setVelocityX(platform.body.velocity.x);
-      //     fire.setSize(8, 2, true);
-      //     fire.anims.play('burn');
-      //     fire.setDepth(2);
-      //     this.fireGroup.add(fire);
-      //   }
-      // }
+      if (this.enemy === 'fire' && Phaser.Math.Between(1, 100) <= this.gameOptions.firePercent) {
+        if (this.firePool.getLength()) {
+          const fire = this.firePool.getFirst();
+          fire.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+          fire.y = posY - 46;
+          fire.alpha = 1;
+          fire.active = true;
+          fire.visible = true;
+          this.firePool.remove(fire);
+        } else {
+          const fire = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), posY - 46, 'fire');
+          fire.setImmovable(true);
+          fire.setVelocityX(platform.body.velocity.x);
+          fire.setSize(8, 2, true);
+          fire.anims.play('burn');
+          fire.setDepth(2);
+          this.fireGroup.add(fire);
+        }
+      }
     }
   }
 
   setMinutes(mseconds) {
-    const seconds = mseconds / 1000;
-    const minutes = Math.floor(seconds / 60);
-    const time = `${minutes} : ${seconds % 60}`;
+    this.newSeconds = mseconds / 1000;
+    const minutes = Math.floor(newSeconds / 60);
+    const time = `${minutes} : ${newSeconds % 60}`;
     return time;
   }
 

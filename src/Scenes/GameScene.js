@@ -64,6 +64,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    prop.gameProperty.lastScore = prop.gameProperty.score;
+    console.log(prop.gameProperty.score);
+
     if (this.selfScene === 'One') {
       prop.gameProperty.currentPhase = 1;
       this.speedIncrease = prop.gameProperty.phaseOneSpeed;
@@ -380,6 +383,7 @@ export default class GameScene extends Phaser.Scene {
 
     if (this.player.y > 600) {
       clearInterval(this.idInterval);
+
       this.scene.start('GameOver', { previousScene: this.scene });
     }
     this.player.x = this.gameOptions.playerStartPosition;

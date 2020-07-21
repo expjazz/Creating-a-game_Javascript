@@ -1,5 +1,6 @@
 import 'phaser';
 import config from '../Config/config';
+import prop from '../Config/gameProperties';
 
 export default class GameOver extends Phaser.Scene {
   constructor() {
@@ -19,6 +20,7 @@ export default class GameOver extends Phaser.Scene {
     this.gameText = this.add.text(0, 0, 'Want to restart the same level?', { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(this.gameText, this.gameButton);
     this.gameButton.on('pointerdown', (pointer) => {
+      prop.gameProperty.score = prop.gameProperty.lastScore;
       this.scene.start(this.previousScene.key);
     });
 
@@ -31,6 +33,7 @@ export default class GameOver extends Phaser.Scene {
 
     this.optionsButton.on('pointerdown', (pointer) => {
       this.scene.start('Options');
+      // do stuff with api
     });
 
     // Credits
@@ -38,6 +41,18 @@ export default class GameOver extends Phaser.Scene {
     this.centerButton(this.creditsButton, -1);
 
     this.creditsText = this.add.text(0, 0, 'Restart from Scratch', { fontSize: '32px', fill: '#fff' });
+    this.centerButtonText(this.creditsText, this.creditsButton);
+
+    this.creditsButton.on('pointerdown', (pointer) => {
+      this.scene.start('Introduction');
+      prop.gameProperty.score = 0;
+    });
+
+    // Credits
+    this.creditsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
+    this.centerButton(this.creditsButton, -1);
+
+    this.creditsText = this.add.text(0, 0, 'Main Menu', { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(this.creditsText, this.creditsButton);
 
     this.creditsButton.on('pointerdown', (pointer) => {

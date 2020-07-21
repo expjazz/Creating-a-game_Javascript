@@ -3,27 +3,29 @@ import 'phaser';
 import prop from '../Config/gameProperties';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(selfScene, background, enemy, nextScene, seconds, selfScale = 1) {
+  constructor(selfScene, background, enemy, nextScene, speedIncrease, seconds, selfScale = 1) {
     super(selfScene);
     this.selfScene = selfScene;
     this.seconds = seconds;
     this.enemy = enemy;
     this.selfScale = selfScale;
     this.background = background;
+    this.speedIncrease = speedIncrease;
     this.nextScene = nextScene;
     this.parallax = 0;
+    this.count = 0;
     this.gameOptions = {
-      platformSpeedRange: [100, 100],
+      platformSpeedRange: [this.speedIncrease, this.speedIncrease],
 
       // mountain speed, in pixels per second
       mountainSpeed: 80,
 
       // spawn range, how far should be the rightmost platform from the right edge
       // before next platform spawns, in pixels
-      spawnRange: [80, 100],
+      spawnRange: [100, 100],
 
       // platform width range, in pixels
-      platformSizeRange: [100, 300],
+      platformSizeRange: [200, 300],
 
       // a height range between rightmost platform and next platform to be spawned
       platformHeightRange: [-5, 5],
@@ -35,10 +37,10 @@ export default class GameScene extends Phaser.Scene {
       platformVerticalLimit: [0.4, 0.8],
 
       // player gravity
-      playerGravity: 900,
+      playerGravity: 1000,
 
       // player jump force
-      jumpForce: 400,
+      jumpForce: 450,
 
       // player starting X position
       playerStartPosition: 200,
@@ -49,7 +51,7 @@ export default class GameScene extends Phaser.Scene {
       // % of probability a coin appears on the platform
       coinPercent: 80,
 
-      spiderPercent: 90,
+      spiderPercent: 0,
 
       // % of probability a fire appears on the platform
       firePercent: 90,
@@ -62,8 +64,6 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    console.log(this.selfScene);
-
     this.background.forEach((back) => {
       this[back] = this.add.tileSprite(0, 0, 0, 0, back).setScale(this.selfScale);
       this[back].setOrigin(0, 0);
@@ -208,6 +208,8 @@ export default class GameScene extends Phaser.Scene {
     this.idInterval = setInterval(() => {
       const time = this.setMinutes(this.seconds);
       this.timeText.text = time;
+      this.count += 1000;
+
       if (this.seconds === 0) { clearInterval(); }
       this.seconds -= 1000;
     }, 1000);
@@ -245,7 +247,7 @@ export default class GameScene extends Phaser.Scene {
     this.input.on('pointerdown', this.jump, this);
   }
 
-  addPlatform(platformWidth, posX, posY) {
+  addPlatform(platformWidth, posX, posY, increaseSpeed = null) {
     this.addedPlatforms += 1;
     let platform;
     if (this.platformPool.getLength()) {
@@ -257,12 +259,17 @@ export default class GameScene extends Phaser.Scene {
       this.platformPool.remove(platform);
       const newRatio = platformWidth / platform.displayWidth;
       platform.displayWidth = platformWidth;
-      platform.tileScaleX = 1 / platform.scaleX;
+
+      if (increaseSpeed) {
+        platform.body.setVelocityX(this.speedIncrease * -1);
+        // this.platformGroup.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+      }
+      // platform.tileScaleX = 1 / platform.scaleX;
     } else {
       platform = this.add.tileSprite(posX, posY, platformWidth, 32, 'platform');
       this.physics.add.existing(platform);
       platform.body.setImmovable(true);
-      platform.body.setVelocityX(Phaser.Math.Between(this.gameOptions.platformSpeedRange[0], this.gameOptions.platformSpeedRange[1]) * -1);
+      platform.body.setVelocityX(this.speedIncrease * -1);
       platform.setDepth(2);
       this.platformGroup.add(platform);
     }
@@ -365,7 +372,6 @@ export default class GameScene extends Phaser.Scene {
       clearInterval(this.idInterval);
       this.scene.start('GameOver', { previousScene: this.scene });
     }
-
     this.player.x = this.gameOptions.playerStartPosition;
 
     let minDistance = 600;
@@ -410,13 +416,18 @@ export default class GameScene extends Phaser.Scene {
 
 
     if (minDistance > this.nextPlatformDistance) {
+      if (this.count % 30000 === 0) {
+        console.log('a');
+        this.speedIncrease += 100;
+        this.count = 0;
+      }
       const nextPlatformWidth = Phaser.Math.Between(this.gameOptions.platformSizeRange[0], this.gameOptions.platformSizeRange[1]);
       const platformRandomHeight = this.gameOptions.platformHeighScale * Phaser.Math.Between(this.gameOptions.platformHeightRange[0], this.gameOptions.platformHeightRange[1]);
       const nextPlatformGap = rightmostPlatformHeight + platformRandomHeight;
       const minPlatformHeight = 600 * this.gameOptions.platformVerticalLimit[0];
       const maxPlatformHeight = 600 * this.gameOptions.platformVerticalLimit[1];
       const nextPlatformHeight = Phaser.Math.Clamp(nextPlatformGap, minPlatformHeight, maxPlatformHeight);
-      this.addPlatform(nextPlatformWidth, 800 + nextPlatformWidth / 2, nextPlatformHeight);
+      this.addPlatform(nextPlatformWidth, 800 + nextPlatformWidth / 2, nextPlatformHeight, this.speedIncrease);
     }
   }
 }

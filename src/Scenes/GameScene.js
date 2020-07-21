@@ -2,26 +2,27 @@
 import 'phaser';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(scene, background, level, nextScene, seconds, selfScale = 1) {
+  constructor(scene, background, enemy, nextScene, seconds, selfScale = 1) {
     super(scene);
     // this.game = gameObj;
     this.seconds = seconds;
+    this.enemy = enemy;
     this.selfScale = selfScale;
     this.background = background;
     this.nextScene = nextScene;
     this.parallax = 0;
     this.gameOptions = {
-      platformSpeedRange: [100, 100],
+      platformSpeedRange: [100, 300],
 
       // mountain speed, in pixels per second
       mountainSpeed: 80,
 
       // spawn range, how far should be the rightmost platform from the right edge
       // before next platform spawns, in pixels
-      spawnRange: [80, 100],
+      spawnRange: [200, 300],
 
       // platform width range, in pixels
-      platformSizeRange: [300, 300],
+      platformSizeRange: [50, 300],
 
       // a height range between rightmost platform and next platform to be spawned
       platformHeightRange: [-5, 5],
@@ -47,7 +48,7 @@ export default class GameScene extends Phaser.Scene {
       // % of probability a coin appears on the platform
       coinPercent: 80,
 
-      spiderPercent: 30,
+      spiderPercent: 90,
 
       // % of probability a fire appears on the platform
       firePercent: 25,
@@ -55,21 +56,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    // this.background.forEach((layer) => {
-    //   this.load.image(layer, `assets/${layer}.png`);
-    // });
 
-    // the firecamp is a sprite sheet made by 32x58 pixels
-    // this.load.spritesheet('fire', 'assets/fire.png', {
-    //   frameWidth: 40,
-    //   frameHeight: 70,
-    // });
 
-    // mountains are a sprite sheet made by 512x512 pixels
-    // this.load.spritesheet('mountain', 'assets/mountain.png', {
-    //   frameWidth: 512,
-    //   frameHeight: 512,
-    // });
   }
 
   create() {
@@ -132,6 +120,18 @@ export default class GameScene extends Phaser.Scene {
       yoyo: true,
       repeat: -1,
     });
+
+    this.anims.create({
+      key: 'ratA',
+      frames: this.anims.generateFrameNumbers('rat', {
+        start: 0,
+        end: 6,
+      }),
+      frameRate: 8,
+      yoyo: true,
+      repeat: -1,
+    });
+
 
     // setting fire animation
     // this.anims.create({
@@ -355,9 +355,11 @@ export default class GameScene extends Phaser.Scene {
           spider.visible = true;
           this.spiderPool.remove(spider);
         } else {
-          const spider = this.physics.add.sprite((posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth)), posY - 31, 'spider');
-          spider.setScale(0.1);
+          const spider = this.physics.add.sprite((posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth)), posY - 31, this.enemy);
+          if (this.enemy === 'spider') spider.setScale(0.1);
           spider.setImmovable(true);
+          if (this.enemy === 'rat') spider.anims.play('ratA');
+
           spider.setVelocityX(platform.body.velocity.x);
           spider.setDepth(2);
           this.spiderGroup.add(spider);

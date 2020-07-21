@@ -46,7 +46,7 @@ export default class IntroductionScene extends Phaser.Scene {
 
   update() {
     if (this.keySpace.isDown) {
-      this.scene.start('PhaseTwo');
+      this.scene.start('One');
     }
   }
 }

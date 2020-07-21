@@ -84,6 +84,15 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('platform', '../assets/platform.png');
 
     this.load.image('spider', 'assets/enemies/spider.png');
+    this.load.spritesheet('rat', 'assets/enemies/rat.png', {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+    // this.load.spritesheet('fire', 'assets/fire.png', {
+    //   frameWidth: 40,
+    //   frameHeight: 70,
+    // });
 
 
     this.load.spritesheet('player', 'assets/dude.png', {

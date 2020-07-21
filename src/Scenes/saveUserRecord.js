@@ -1,8 +1,10 @@
-class Demo extends Phaser.Scene {
+import 'phaser';
+
+
+export default class saveUserRecord extends Phaser.Scene {
   constructor() {
-    super({
-      key: 'examples',
-    });
+    super('saveUserRecord');
+    console.log('from save');
   }
 
   preload() {
@@ -34,18 +36,3 @@ class Demo extends Phaser.Scene {
 
   update() { }
 }
-
-const config = {
-  type: Phaser.AUTO,
-  parent: 'phaser-example',
-  width: 800,
-  height: 600,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-  },
-  dom: {
-    createContainer: true,
-  },
-  scene: Demo,
-};

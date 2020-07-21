@@ -9,7 +9,8 @@ export default class IntroductionScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor('#000111');
     this.introText = this.add.text(0, 0, 'Introduction', { fontSize: '32px', fill: '#fff' });
-    this.madeByText = this.add.text(0, 0, 'We live in a strange world where some people mistreat they little pets. \n to John, our hero works in a non-profit organization where he needs to save any kind of animals that are hurt. It does not matter where (sometimes a city, a florest, or even a desert), our hero is always there to do whatever it takes.  \nto Sometimes the pets are too heart and need medical attention really quick.  \nto Can he fill the task and save the little guys?');
+    // eslint-disable-next-line quotes
+    this.madeByText = this.add.text(0, 0, "We live in a strange \nworld where some people mistreat they little pets.\nJohn, our hero works in a non-profit organization\n where he needs to save any kind of animals that are hurt.\n It does not matter where (sometimes a city, a florest, or even a desert), \nour hero is always there to do whatever it takes.  \nto Sometimes the pets are too heart and need medical attention really quick.  \nto Can he fill the task and save the little guys?", { padding: '64px' });
     this.zone = this.add.zone(800 / 2, 600 / 2, 800, 600);
 
     this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -36,7 +37,7 @@ export default class IntroductionScene extends Phaser.Scene {
     this.madeByTween = this.tweens.add({
       targets: this.madeByText,
       y: -500,
-      duration: 6000,
+      duration: 60000,
       delay: 0,
       onComplete: (() => {
         this.scene.start('One');

@@ -27,7 +27,7 @@ export default class GameOver extends Phaser.Scene {
     this.optionsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
     this.centerButton(this.optionsButton);
 
-    this.optionsText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#fff' });
+    this.optionsText = this.add.text(0, 0, 'Save your score', { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(this.optionsText, this.optionsButton);
 
     this.optionsButton.on('pointerdown', (pointer) => {
@@ -38,11 +38,11 @@ export default class GameOver extends Phaser.Scene {
     this.creditsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
     this.centerButton(this.creditsButton, -1);
 
-    this.creditsText = this.add.text(0, 0, 'Whatever', { fontSize: '32px', fill: '#fff' });
+    this.creditsText = this.add.text(0, 0, 'Restart from Scratch', { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(this.creditsText, this.creditsButton);
 
     this.creditsButton.on('pointerdown', (pointer) => {
-      this.scene.start('Credits');
+      this.scene.start('Title');
     });
 
     this.input.on('pointerover', (event, gameObjects) => {

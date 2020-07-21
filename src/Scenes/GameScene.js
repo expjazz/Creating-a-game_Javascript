@@ -1,13 +1,10 @@
 /* eslint-disable no-undef */
 import 'phaser';
 import prop from '../Config/gameProperties';
-import GameOver from './GameOver';
 
 export default class GameScene extends Phaser.Scene {
   constructor(scene, background, enemy, nextScene, seconds, selfScale = 1) {
     super(scene);
-    console.log(nextScene);
-    // this.game = gameObj;
     this.scene = scene;
     this.seconds = seconds;
     this.enemy = enemy;
@@ -26,7 +23,7 @@ export default class GameScene extends Phaser.Scene {
       spawnRange: [80, 100],
 
       // platform width range, in pixels
-      platformSizeRange: [300, 300],
+      platformSizeRange: [100, 300],
 
       // a height range between rightmost platform and next platform to be spawned
       platformHeightRange: [-5, 5],
@@ -240,7 +237,7 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.spiderGroup, (player, spider) => {
       this.physics.pause();
       player.setTint(0xff0000);
-      this.scene.start('GameOver');
+      this.scene.start('GameOver', { previousScene: this.scene });
       clearInterval(this.idInterval);
     });
     this.input.on('pointerdown', this.jump, this);
@@ -340,7 +337,6 @@ export default class GameScene extends Phaser.Scene {
   }
 
   jump() {
-    console.log(this);
     if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps))) {
       if (this.player.body.touching.down) {
         this.playerJumps = 0;
@@ -364,6 +360,7 @@ export default class GameScene extends Phaser.Scene {
 
 
     if (this.player.y > 600) {
+      clearInterval(this.idInterval);
       this.scene.start('GameOver', { previousScene: this.scene });
     }
 

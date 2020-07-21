@@ -55,31 +55,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    // console.log(this.background);
-    // this.load.image('sky', '../assets/BG.png');
-    this.background.forEach((layer) => {
-      this.load.image(layer, `assets/${layer}.png`);
-    });
-    this.load.image('platform', '../assets/platform.png');
-    // // this.load.image('ftrees', 'assets/ftrees.png');
-    // this.load.image('trees', 'assets/foreground.png');
-    // this.load.image('mountains', 'assets/back-buildings.png');
-    // this.load.image('mountain2', 'assets/far-buildings.png');
-    this.load.image('spider', 'assets/spider.png');
-    // this.load.image('mountainfaar', 'assets/mountainfaar.png');
-
-
-    // player is a sprite sheet made by 24x48 pixels
-    this.load.spritesheet('player', 'assets/dude.png', {
-      frameWidth: 32,
-      frameHeight: 48,
-    });
-
-    // the coin is a sprite sheet made by 20x20 pixels
-    this.load.spritesheet('coin', 'assets/coin.png', {
-      frameWidth: 20,
-      frameHeight: 20,
-    });
+    // this.background.forEach((layer) => {
+    //   this.load.image(layer, `assets/${layer}.png`);
+    // });
 
     // the firecamp is a sprite sheet made by 32x58 pixels
     // this.load.spritesheet('fire', 'assets/fire.png', {

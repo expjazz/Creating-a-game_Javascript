@@ -1,8 +1,9 @@
 import 'phaser';
 
 export default class PreloaderScene extends Phaser.Scene {
-  constructor() {
+  constructor(backgrounds) {
     super('Preloader');
+    this.backgrounds = backgrounds;
   }
 
   init() {
@@ -80,6 +81,22 @@ export default class PreloaderScene extends Phaser.Scene {
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
 
     // load assets needed in our game
+    this.load.image('platform', '../assets/platform.png');
+
+    this.load.image('spider', 'assets/enemies/spider.png');
+
+
+    this.load.spritesheet('player', 'assets/dude.png', {
+      frameWidth: 32,
+      frameHeight: 48,
+    });
+    this.load.spritesheet('coin', 'assets/coin.png', {
+      frameWidth: 20,
+      frameHeight: 20,
+    });
+    this.backgrounds.forEach((backArr) => {
+      backArr.forEach((layer => this.load.image(layer, `assets/${layer}.png`)));
+    });
 
     this.load.image('blueButton1', 'assets/ui/blue_button02.png');
     this.load.image('blueButton2', 'assets/ui/blue_button03.png');

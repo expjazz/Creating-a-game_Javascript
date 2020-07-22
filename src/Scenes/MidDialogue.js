@@ -22,6 +22,8 @@ export default class MidDialogue extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(400, 300, 'restBG');
+
     prop.gameProperty.tripleJump = this.jumpBonus;
     const selfScene = this;
     this.Alert(selfScene, this.title, this.content)

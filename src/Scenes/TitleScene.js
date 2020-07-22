@@ -9,8 +9,9 @@ export default class TitleScene extends Phaser.Scene {
 
   create() {
     // Game
+    this.add.image(400, 300, 'titleBG');
 
-    this.gameButton = new Button('Play in History Mode', 2, 'Introduction', this);
+    this.gameButton = new Button('History', 2, 'Introduction', this);
     this.gameButton.create();
     // this.gameButton = this.add.sprite(100, 200, 'blueButton1').setInteractive();
     // this.centerButton(this.gameButton, 1);
@@ -21,7 +22,7 @@ export default class TitleScene extends Phaser.Scene {
     // this.gameButton.on('pointerdown', (pointer) => {
     //   this.scene.start('One');
     // });
-    this.freeGameButton = new Button('Play freely', 1, 'FreePlay', this);
+    this.freeGameButton = new Button('Free Play', 1, 'FreePlay', this);
     this.freeGameButton.create();
 
     // Options
@@ -42,7 +43,7 @@ export default class TitleScene extends Phaser.Scene {
     this.creditsButton.create();
 
     // Hiigh scores
-    this.highScoreButton = new Button('Leaderboard', -2, 'HighScore', this);
+    this.highScoreButton = new Button('Leaders', -2, 'HighScore', this);
     this.highScoreButton.create();
 
     this.model = this.sys.game.globals.model;

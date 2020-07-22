@@ -23,6 +23,14 @@ export default class Button {
       }
       this.actualScene.scene.start(this.startScene);
     });
+
+    this.actualScene.input.on('pointerover', (event, gameObjects) => {
+      gameObjects[0].setTexture('blueButton2');
+    });
+
+    this.actualScene.input.on('pointerout', (event, gameObjects) => {
+      gameObjects[0].setTexture('blueButton1');
+    });
   }
 
   centerButton(gameObject, offset = 0) {
@@ -39,12 +47,3 @@ export default class Button {
     );
   }
 }
-
-
-// this.input.on('pointerover', (event, gameObjects) => {
-//   gameObjects[0].setTexture('blueButton2');
-// });
-
-// this.input.on('pointerout', (event, gameObjects) => {
-//   gameObjects[0].setTexture('blueButton1');
-// });

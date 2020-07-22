@@ -13,6 +13,7 @@ export default class GameOver extends Phaser.Scene {
 
   create() {
     // Game
+    this.add.image(400, 300, 'restBG');
 
     this.gameButton = this.add.sprite(100, 200, 'blueButton1').setInteractive();
     this.centerButton(this.gameButton, 1);

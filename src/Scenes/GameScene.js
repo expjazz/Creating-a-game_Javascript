@@ -275,6 +275,8 @@ export default class GameScene extends Phaser.Scene {
       this.scene.start('GameOver', { previousScene: this.scene });
       clearInterval(this.idInterval);
     }, null, this);
+    const keyObj = this.input.keyboard.addKey('Space');
+    keyObj.on('down', this.jump, this);
     this.input.on('pointerdown', this.jump, this);
   }
 

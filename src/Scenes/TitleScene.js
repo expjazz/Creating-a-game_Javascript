@@ -48,6 +48,25 @@ export default class TitleScene extends Phaser.Scene {
     this.input.on('pointerout', (event, gameObjects) => {
       gameObjects[0].setTexture('blueButton1');
     });
+
+    // Hiigh scorres
+    this.highScoreButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
+    this.centerButton(this.highScoreButton, -3);
+
+    this.highScoreText = this.add.text(0, 0, 'Check the high scores', { fontSize: '32px', fill: '#fff' });
+    this.centerButtonText(this.highScoreText, this.highScoreButton);
+
+    this.highScoreButton.on('pointerdown', (pointer) => {
+      this.scene.start('HighScore');
+    });
+
+    this.input.on('pointerover', (event, gameObjects) => {
+      gameObjects[0].setTexture('blueButton2');
+    });
+
+    this.input.on('pointerout', (event, gameObjects) => {
+      gameObjects[0].setTexture('blueButton1');
+    });
   }
 
   centerButton(gameObject, offset = 0) {

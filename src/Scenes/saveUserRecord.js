@@ -33,7 +33,13 @@ export default class saveUserRecord extends Phaser.Scene {
       .on('pointerdown', () => {
         this.count = 0;
         this.plugins.get('rextexteditplugin').edit(printText);
-        keyObj.on('down', () => { if (this.count === 0) console.log('is down'); this.count = 1; });
+        keyObj.on('down', () => {
+          if (this.count === 0) {
+            console.log('is down');
+            this.count = 1;
+            console.log(printText._text);
+          }
+        });
       }, this);
 
     this.add.text(0, 580, 'Click text to start editing, press enter key to stop editing');

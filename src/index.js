@@ -15,11 +15,14 @@ import saveUserRecord from './Scenes/saveUserRecord';
 import HighScoreScene from './Scenes/HighScoreScene';
 import lines from './Scenes/dialogues';
 import FreePlay from './Scenes/FreePlay';
+import Audio from './models/music';
+
 
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-
+    const model = new Audio();
+    this.globals = { model, bgMusic: null };
     this.scene.add('Title', TitleScene);
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', new PreloaderScene(back.background));

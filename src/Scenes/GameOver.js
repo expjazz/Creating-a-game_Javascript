@@ -15,8 +15,7 @@ export default class GameOver extends Phaser.Scene {
   create() {
     this.add.image(400, 300, 'restBG');
 
-    this.gameButton = new Button('Try Again', 2, this.previousScene.key, this);
-    prop.gameProperty.score = prop.gameProperty.lastScore;
+    this.gameButton = new Button('Try Again', 2, this.previousScene.key, this, false, true);
     this.gameButton.create();
 
 

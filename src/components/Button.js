@@ -2,12 +2,13 @@ import config from '../Config/config';
 import prop from '../Config/gameProperties';
 
 export default class Button {
-  constructor(content, position, startScene, actualScene, freePlay = false) {
+  constructor(content, position, startScene, actualScene, freePlay = false, scoreCondition = false) {
     this.content = content;
     this.position = position;
     this.startScene = startScene;
     this.actualScene = actualScene;
     this.freePlay = freePlay;
+    this.scoreCondition = scoreCondition;
   }
 
   create() {
@@ -16,6 +17,9 @@ export default class Button {
     const text = this.actualScene.add.text(0, 0, this.content, { fontSize: '28px', fill: '#fff' });
     this.centerButtonText(text, button);
     button.on('pointerdown', (pointer) => {
+      if (this.scoreCondition) {
+        prop.gameProperty.score = prop.gameProperty.lastScore;
+      }
       if (this.freePlay) {
         prop.gameProperty.freePlay = true;
       } else {

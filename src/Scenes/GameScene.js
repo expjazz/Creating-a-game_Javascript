@@ -64,6 +64,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    console.log('hello from the gamescene');
     this.count = 0;
 
     this.seconds = this.fullTime;

@@ -6,6 +6,7 @@ const gameProperty = {
   phaseThreeSpeed: 300,
   currentPhase: 1,
   lastScore: 0,
+  gameSeconds: 0,
 };
 
 export default { gameProperty };

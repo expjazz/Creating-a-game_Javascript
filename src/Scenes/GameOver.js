@@ -49,13 +49,13 @@ export default class GameOver extends Phaser.Scene {
     });
 
     // Credits
-    this.creditsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
-    this.centerButton(this.creditsButton, -1);
+    this.menuButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
+    this.centerButton(this.menuButton, -2);
 
-    this.creditsText = this.add.text(0, 0, 'Main Menu', { fontSize: '32px', fill: '#fff' });
-    this.centerButtonText(this.creditsText, this.creditsButton);
+    this.menuText = this.add.text(0, 0, 'Main Menu', { fontSize: '32px', fill: '#fff' });
+    this.centerButtonText(this.menuText, this.menuButton);
 
-    this.creditsButton.on('pointerdown', (pointer) => {
+    this.menuButton.on('pointerdown', (pointer) => {
       this.scene.start('Title');
     });
 

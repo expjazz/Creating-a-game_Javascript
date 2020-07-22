@@ -1,3 +1,5 @@
+import config from '../Config/config';
+
 export default class Button {
   constructor(content, position, startScene, actualScene) {
     this.content = content;
@@ -8,10 +10,24 @@ export default class Button {
 
   create() {
     const button = this.actualScene.add.sprite(100, 200, 'blueButton1').setInteractive();
-    this.actualScene.centerButton(button, this.position);
+    this.centerButton(button, this.position);
     const text = this.actualScene.add.text(0, 0, this.content, { fontSize: '32px', fill: '#fff' });
-    this.actualScene.centerButtonText(text, button);
+    this.centerButtonText(text, button);
     button.on('pointerdown', (pointer) => this.actualScene.scene.start(this.startScene));
+  }
+
+  centerButton(gameObject, offset = 0) {
+    Phaser.Display.Align.In.Center(
+      gameObject,
+      this.actualScene.add.zone(config.width / 2, config.height / 2 - offset * 100, config.width, config.height),
+    );
+  }
+
+  centerButtonText(gameText, gameButton) {
+    Phaser.Display.Align.In.Center(
+      gameText,
+      gameButton,
+    );
   }
 }
 

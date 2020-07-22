@@ -21,7 +21,7 @@ export default class TitleScene extends Phaser.Scene {
     // this.gameButton.on('pointerdown', (pointer) => {
     //   this.scene.start('One');
     // });
-    this.freeGameButton = new Button('Play freely', 1, 'Playfree', this);
+    this.freeGameButton = new Button('Play freely', 1, 'FreePlay', this);
     this.freeGameButton.create();
 
     // Options
@@ -44,19 +44,5 @@ export default class TitleScene extends Phaser.Scene {
     // Hiigh scores
     this.highScoreButton = new Button('Leaderboard', -2, 'HighScore', this);
     this.highScoreButton.create();
-  }
-
-  centerButton(gameObject, offset = 0) {
-    Phaser.Display.Align.In.Center(
-      gameObject,
-      this.add.zone(config.width / 2, config.height / 2 - offset * 100, config.width, config.height),
-    );
-  }
-
-  centerButtonText(gameText, gameButton) {
-    Phaser.Display.Align.In.Center(
-      gameText,
-      gameButton,
-    );
   }
 }

@@ -13,16 +13,13 @@ import GameOver from './Scenes/GameOver';
 import back from './Scenes/background';
 import saveUserRecord from './Scenes/saveUserRecord';
 import HighScoreScene from './Scenes/HighScoreScene';
-import api from './Config/apiHandler';
 import lines from './Scenes/dialogues';
+import FreePlay from './Scenes/FreePlay';
 
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-    // api.apiHandlerPostFirst();
-    // api.postScore('Mark Adams', 2);
-    // api.getScore();
-    // api.apiExport('John Doe', 1);
+
     this.scene.add('Title', TitleScene);
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', new PreloaderScene(back.background));
@@ -31,6 +28,7 @@ class Game extends Phaser.Game {
     this.scene.add('rexUI', saveUserRecord);
 
     this.scene.add('Introduction', IntroductionScene);
+    this.scene.add('FreePlay', FreePlay);
     this.scene.add('One', new GameScene('One', back.background[0], 'rat', 'DialogueOne', 350, 30000, 3.2));
     this.scene.add('PhaseTwo', new GameScene('PhaseTwo', back.background[1], 'spider', 'DialogueTwo', 300, 120000));
     this.scene.add('PhaseThree', new GameScene('PhaseThree', back.background[2], 'fire', 'DialogueThree', 400, 90000));

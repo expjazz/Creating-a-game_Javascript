@@ -8,6 +8,7 @@ const gameProperty = {
   lastScore: 0,
   gameSeconds: 0,
   tripleJump: 3,
+  freePlay: false,
 };
 
 export default { gameProperty };

@@ -1,11 +1,13 @@
 import config from '../Config/config';
+import prop from '../Config/gameProperties';
 
 export default class Button {
-  constructor(content, position, startScene, actualScene) {
+  constructor(content, position, startScene, actualScene, freePlay = false) {
     this.content = content;
     this.position = position;
     this.startScene = startScene;
     this.actualScene = actualScene;
+    this.freePlay = freePlay;
   }
 
   create() {
@@ -13,7 +15,14 @@ export default class Button {
     this.centerButton(button, this.position);
     const text = this.actualScene.add.text(0, 0, this.content, { fontSize: '32px', fill: '#fff' });
     this.centerButtonText(text, button);
-    button.on('pointerdown', (pointer) => this.actualScene.scene.start(this.startScene));
+    button.on('pointerdown', (pointer) => {
+      if (this.freePlay) {
+        prop.gameProperty.freePlay = true;
+      } else {
+        prop.gameProperty.freePlay = false;
+      }
+      this.actualScene.scene.start(this.startScene);
+    });
   }
 
   centerButton(gameObject, offset = 0) {

@@ -7,13 +7,13 @@ export default class FreePlay extends Phaser.Scene {
   }
 
   create() {
-    const phaseOneBtn = new Button('First', 1, 'One', this);
+    const phaseOneBtn = new Button('First', 1, 'One', this, true);
     phaseOneBtn.create();
 
-    const phaseTwoBtn = new Button('Second', 0, 'PhaseTwo', this);
+    const phaseTwoBtn = new Button('Second', 0, 'PhaseTwo', this, true);
     phaseTwoBtn.create();
 
-    const phaseThreeBtn = new Button('Third', -1, 'PhaseThree', this);
+    const phaseThreeBtn = new Button('Third', -1, 'PhaseThree', this, true);
     phaseThreeBtn.create();
   }
 }

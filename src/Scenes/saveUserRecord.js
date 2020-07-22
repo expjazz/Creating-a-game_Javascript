@@ -1,5 +1,6 @@
 import 'phaser';
-
+import api from '../Config/apiHandler';
+import prop from '../Config/gameProperties';
 
 export default class saveUserRecord extends Phaser.Scene {
   constructor() {
@@ -38,6 +39,8 @@ export default class saveUserRecord extends Phaser.Scene {
             console.log('is down');
             this.count = 1;
             console.log(printText._text);
+            api.postScore(printText._text, prop.gameProperty.score);
+            this.scene.start('HighScore');
           }
         });
       }, this);

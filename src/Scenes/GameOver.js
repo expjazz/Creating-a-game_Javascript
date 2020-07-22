@@ -32,7 +32,7 @@ export default class GameOver extends Phaser.Scene {
     this.centerButtonText(this.optionsText, this.optionsButton);
 
     this.optionsButton.on('pointerdown', (pointer) => {
-      this.scene.start('Options');
+      this.scene.start('rexUI');
       // do stuff with api
     });
 

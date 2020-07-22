@@ -57,7 +57,7 @@ export default class TitleScene extends Phaser.Scene {
     this.centerButtonText(this.highScoreText, this.highScoreButton);
 
     this.highScoreButton.on('pointerdown', (pointer) => {
-      this.scene.start('rexUI');
+      this.scene.start('HighScore');
     });
 
     this.input.on('pointerover', (event, gameObjects) => {

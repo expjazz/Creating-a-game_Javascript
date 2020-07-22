@@ -2,13 +2,14 @@ import config from '../Config/config';
 import prop from '../Config/gameProperties';
 
 export default class Button {
-  constructor(content, position, startScene, actualScene, freePlay = false, scoreCondition = false) {
+  constructor(content, position, startScene, actualScene, freePlay = false, scoreCondition = false, dead = false) {
     this.content = content;
     this.position = position;
     this.startScene = startScene;
     this.actualScene = actualScene;
     this.freePlay = freePlay;
     this.scoreCondition = scoreCondition;
+    this.dead = dead;
   }
 
   create() {
@@ -22,6 +23,7 @@ export default class Button {
       }
       if (this.freePlay) {
         prop.gameProperty.freePlay = true;
+        prop.gameProperty.tripleJump = 3;
       } else {
         prop.gameProperty.freePlay = false;
       }

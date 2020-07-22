@@ -15,48 +15,35 @@ export default class GameScene extends Phaser.Scene {
     this.parallax = 0;
     this.fullTime = seconds;
     this.platformShape = platformShape;
+    this.tempTripleJump = 0;
     this.bgTrack = bgTrack;
     this.gameOptions = {
       platformSpeedRange: [this.speedIncrease, this.speedIncrease],
 
-      // mountain speed, in pixels per second
-      mountainSpeed: 80,
 
-      // spawn range, how far should be the rightmost platform from the right edge
-      // before next platform spawns, in pixels
-      spawnRange: [100, 100],
+      spawnRange: [80, 100],
 
-      // platform width range, in pixels
       platformSizeRange: [200, 300],
 
-      // a height range between rightmost platform and next platform to be spawned
       platformHeightRange: [-5, 5],
 
-      // a scale to be multiplied by platformHeightRange
       platformHeighScale: 20,
 
-      // platform max and min height, as screen height ratio
       platformVerticalLimit: [0.4, 0.8],
 
-      // player gravity
       playerGravity: 1000,
 
-      // player jump force
       jumpForce: 450,
 
-      // player starting X position
       playerStartPosition: 200,
 
-      // consecutive jumps allowed
       jumps: 2,
 
-      // % of probability a coin appears on the platform
       coinPercent: 80,
 
       spiderPercent: 25,
 
-      // % of probability a fire appears on the platform
-      firePercent: 90,
+      firePercent: 35,
     };
   }
 
@@ -66,6 +53,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.tempTripleJump = prop.gameProperty.tripleJump;
     this.music = this.sys.game.globals.model;
     if (this.music.musicOn === true) {
       this.sys.game.globals.bgMusic.stop();
@@ -258,7 +246,7 @@ export default class GameScene extends Phaser.Scene {
       this.dying = true;
       this.player.anims.stop();
       this.physics.pause();
-
+      prop.gameProperty.tripleJump = this.tempTripleJump;
       this.player.setFrame(2);
       this.player.body.setVelocityY(-200);
       this.sound.play('lost');
@@ -279,6 +267,7 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.spiderGroup, (player, spider) => {
       this.dying = true;
       this.sound.play('lost');
+      prop.gameProperty.tripleJump = this.tempTripleJump;
 
       this.physics.pause();
       player.setTint(0xff0000);
@@ -445,6 +434,7 @@ export default class GameScene extends Phaser.Scene {
 
     if (this.player.y > 600) {
       this.sound.play('lost');
+      prop.gameProperty.tripleJump = this.tempTripleJump;
 
       clearInterval(this.idInterval);
 

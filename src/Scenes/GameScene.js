@@ -3,7 +3,7 @@ import 'phaser';
 import prop from '../Config/gameProperties';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(selfScene, background, enemy, nextScene, speedIncrease, seconds, selfScale = 1) {
+  constructor(selfScene, background, enemy, nextScene, speedIncrease, seconds, bgTrack, selfScale = 1) {
     super(selfScene);
     this.selfScene = selfScene;
     this.seconds = seconds;
@@ -14,6 +14,7 @@ export default class GameScene extends Phaser.Scene {
     this.nextScene = nextScene;
     this.parallax = 0;
     this.fullTime = seconds;
+    this.bgTrack = bgTrack;
     this.gameOptions = {
       platformSpeedRange: [this.speedIncrease, this.speedIncrease],
 
@@ -64,7 +65,15 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    console.log('hello from the gamescene');
+    this.music = this.sys.game.globals.model;
+    if (this.music.musicOn === true) {
+      this.sys.game.globals.bgMusic.stop();
+      this.bgMusic = this.sound.add(`${this.bgTrack}track`, { volume: 0.7, loop: true });
+      this.bgMusic.play();
+      this.music.bgMusicPlaying = true;
+      this.sys.game.globals.bgMusic = this.bgMusic;
+      this.sys.game.globals.bgMusic.play();
+    }
     this.count = 0;
 
     this.seconds = this.fullTime;

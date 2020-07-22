@@ -43,3 +43,10 @@
    
 
 
+ATTRIBUTION: The Cynic Project / cynicmusic.com / pixelsphere.org
+
+Please credit -- The Cynic Project / pixelsphere.org / cynicmusic.com
+
+Credit to Joth or a link to my OGA page appreciated, but not required.
+
+

@@ -30,7 +30,7 @@ class Game extends Phaser.Game {
     this.scene.add('rexUI', saveUserRecord);
 
     this.scene.add('Introduction', IntroductionScene);
-    this.scene.add('One', new GameScene('One', back.background[0], 'rat', 'DialogueOne', 350, 90000, 3.2));
+    this.scene.add('One', new GameScene('One', back.background[0], 'rat', 'DialogueOne', 350, 30000, 3.2));
     this.scene.add('PhaseTwo', new GameScene('PhaseTwo', back.background[1], 'spider', 'DialogueTwo', 300, 120000));
     this.scene.add('PhaseThree', new GameScene('PhaseThree', back.background[2], 'fire', 'DialogueThree', 400, 90000));
     this.scene.add('DialogueIntro', new MidDialogue('DialogueIntro', lines.dialogues[0][0], lines.dialogues[0][1], 'One'));

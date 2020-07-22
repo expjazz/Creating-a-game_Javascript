@@ -68,7 +68,6 @@ export default class GameScene extends Phaser.Scene {
 
     this.seconds = this.fullTime;
     prop.gameProperty.lastScore = prop.gameProperty.score;
-    console.log(prop.gameProperty.score);
 
     if (this.selfScene === 'One') {
       prop.gameProperty.currentPhase = 1;
@@ -225,7 +224,10 @@ export default class GameScene extends Phaser.Scene {
       const time = this.setMinutes(this.seconds);
       this.timeText.text = time;
       this.count += 1000;
-      console.log(this.count);
+      if (this.count !== 0 && this.count % 3 === 0) {
+        prop.gameProperty.score += 3;
+        this.scoreText.text = `score: ${prop.gameProperty.score}`;
+      }
 
       this.seconds -= 1000;
     }, 1000);

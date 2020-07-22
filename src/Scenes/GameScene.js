@@ -3,7 +3,7 @@ import 'phaser';
 import prop from '../Config/gameProperties';
 
 export default class GameScene extends Phaser.Scene {
-  constructor(selfScene, background, enemy, nextScene, speedIncrease, seconds, bgTrack, selfScale = 1) {
+  constructor(selfScene, background, enemy, nextScene, speedIncrease, seconds, bgTrack, platformShape = 'platform', selfScale = 1) {
     super(selfScene);
     this.selfScene = selfScene;
     this.seconds = seconds;
@@ -14,6 +14,7 @@ export default class GameScene extends Phaser.Scene {
     this.nextScene = nextScene;
     this.parallax = 0;
     this.fullTime = seconds;
+    this.platformShape = platformShape;
     this.bgTrack = bgTrack;
     this.gameOptions = {
       platformSpeedRange: [this.speedIncrease, this.speedIncrease],
@@ -312,7 +313,7 @@ export default class GameScene extends Phaser.Scene {
       }
       // platform.tileScaleX = 1 / platform.scaleX;
     } else {
-      platform = this.add.tileSprite(posX, posY, platformWidth, 32, 'platform');
+      platform = this.add.tileSprite(posX, posY, platformWidth, 32, this.platformShape);
       this.physics.add.existing(platform);
       platform.body.setImmovable(true);
       platform.body.setVelocityX(this.speedIncrease * -1);

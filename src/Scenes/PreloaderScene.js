@@ -82,6 +82,9 @@ export default class PreloaderScene extends Phaser.Scene {
 
     // load assets needed in our game
     this.load.image('platform', '../assets/platform.png');
+    this.load.image('platformTwo', '../assets/platform2.png');
+    this.load.image('platformThree', '../assets/platform3.png');
+
 
     this.load.image('spider', 'assets/enemies/spider.png');
     this.load.spritesheet('rat', 'assets/enemies/rat.png', {

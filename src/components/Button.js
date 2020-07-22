@@ -14,7 +14,7 @@ export default class Button {
   create() {
     const button = this.actualScene.add.sprite(100, 200, 'blueButton1').setInteractive();
     this.centerButton(button, this.position);
-    const text = this.actualScene.add.text(0, 0, this.content, { fontSize: '28px', fill: '#fff' });
+    const text = this.actualScene.add.text(0, 0, this.content, { fontSize: '22px', fill: '#fff' });
     this.centerButtonText(text, button);
     button.on('pointerdown', (pointer) => {
       if (this.scoreCondition) {

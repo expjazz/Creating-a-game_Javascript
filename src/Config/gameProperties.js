@@ -7,6 +7,7 @@ const gameProperty = {
   currentPhase: 1,
   lastScore: 0,
   gameSeconds: 0,
+  tripleJump: 3,
 };
 
 export default { gameProperty };

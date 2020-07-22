@@ -136,7 +136,11 @@ export default class GameScene extends Phaser.Scene {
       frameRate: 15,
       repeat: -1,
     });
-
+    this.jumpText = this.add.text(300, 16, `Triple Jumps missing: ${prop.gameProperty.tripleJump}`, {
+      fontSize: '12px',
+      fill: '#000',
+      align: 'center',
+    });
 
     this.scoreText = this.add.text(16, 16, `score: ${prop.gameProperty.score}`, {
       fontSize: '32px',
@@ -397,12 +401,16 @@ export default class GameScene extends Phaser.Scene {
   }
 
   jump() {
-    if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps))) {
+    if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps) || (prop.gameProperty.tripleJump > 0 && this.playerJumps < 4))) {
       if (this.player.body.touching.down) {
         this.playerJumps = 0;
       }
       this.player.setVelocityY(this.gameOptions.jumpForce * -1);
       this.playerJumps += 1;
+      if (this.playerJumps > 2) {
+        prop.gameProperty.tripleJump -= 1;
+        this.jumpText.text = `Triple Jumps missing: ${prop.gameProperty.tripleJump}`;
+      }
 
       this.player.anims.stop();
     }

@@ -1,12 +1,14 @@
 import Phaser from 'phaser';
+import prop from '../Config/gameProperties';
 
 export default class MidDialogue extends Phaser.Scene {
-  constructor(selfScene, title, content, nextScene) {
+  constructor(selfScene, title, content, jumpBonus, nextScene) {
     super(selfScene);
     this.title = title;
     this.selfScene = selfScene;
     this.content = content;
     this.nextScene = nextScene;
+    this.jumpBonus = jumpBonus;
     this.AlertDialog = null;
   }
 
@@ -20,6 +22,7 @@ export default class MidDialogue extends Phaser.Scene {
   }
 
   create() {
+    prop.gameProperty.tripleJump = this.jumpBonus;
     const selfScene = this;
     this.Alert(selfScene, this.title, this.content)
       .then(() => this.scene.start(this.nextScene));

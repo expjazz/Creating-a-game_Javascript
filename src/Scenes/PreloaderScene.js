@@ -116,6 +116,9 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.audio('onetrack', ['assets/music/012_Sirens_in_Darkness.mp3']);
     this.load.audio('twotrack', ['assets/music/019_seven_and_eight_7-8_combined.mp3']);
     this.load.audio('threetrack', ['assets/music/FantasyOrchestralTheme.mp3']);
+    this.load.audio('jump', ['assets/music/jump.mp3']);
+    this.load.audio('collectCoin', ['assets/music/133008__cosmicd__annulet-of-absorption.wav']);
+    this.load.audio('lost', ['assets/music/qubodup-PowerDrain.ogg']);
   }
 
   ready() {

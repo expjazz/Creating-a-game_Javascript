@@ -260,6 +260,7 @@ export default class GameScene extends Phaser.Scene {
 
       this.player.setFrame(2);
       this.player.body.setVelocityY(-200);
+      this.sound.play('lost');
       this.physics.world.removeCollider(this.platformCollider);
       this.scene.start('GameOver', { previousScene: this.scene });
       clearInterval(this.idInterval);
@@ -268,7 +269,7 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.coinGroup, (player, coin) => {
       prop.gameProperty.score += 10;
       this.scoreText.text = `score: ${prop.gameProperty.score}`;
-
+      this.sound.play('collectCoin');
       coin.disableBody(true, true);
     });
 
@@ -276,6 +277,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.spiderGroup, (player, spider) => {
       this.dying = true;
+      this.sound.play('lost');
 
       this.physics.pause();
       player.setTint(0xff0000);
@@ -416,6 +418,7 @@ export default class GameScene extends Phaser.Scene {
     if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps) || (prop.gameProperty.tripleJump > 0 && this.playerJumps < 4))) {
       if (this.player.body.touching.down) {
         this.playerJumps = 0;
+        this.sound.play('jump');
       }
       this.player.setVelocityY(this.gameOptions.jumpForce * -1);
       this.playerJumps += 1;
@@ -440,6 +443,8 @@ export default class GameScene extends Phaser.Scene {
 
 
     if (this.player.y > 600) {
+      this.sound.play('lost');
+
       clearInterval(this.idInterval);
 
       this.scene.start('GameOver', { previousScene: this.scene });

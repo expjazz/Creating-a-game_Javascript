@@ -50,3 +50,6 @@ Please credit -- The Cynic Project / pixelsphere.org / cynicmusic.com
 Credit to Joth or a link to my OGA page appreciated, but not required.
 
 
+Copyright 2012 Iwan 'qubodup' Gabovitch http://qubodup.net qubodup@gmail.com | License: CC Attribution-ShareAlike 3.0 Unported http://creativecommons.org/licenses/by-sa/3.0/
+
+Tamara Ramsay http://vectorgurl.com/

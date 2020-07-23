@@ -118,7 +118,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('box', 'assets/ui/grey_box.png');
     this.load.image('checkedBox', 'assets/ui/blue_boxCheckmark.png');
     this.load.audio('bgMusic', ['assets/music/introGame.mp3']);
-    this.load.audio('onetrack', ['assets/music/012_Sirens_in_Darkness.mp3']);
+    this.load.audio('onetrack', ['assets/music/012-Sirens-in-Darkness.mp3']);
     this.load.audio('twotrack', ['assets/music/019_seven_and_eight_7-8_combined.mp3']);
     this.load.audio('threetrack', ['assets/music/FantasyOrchestralTheme.mp3']);
     this.load.audio('jump', ['assets/music/jump.mp3']);

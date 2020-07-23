@@ -9,6 +9,8 @@ export default class HighscoreScene extends Phaser.Scene {
   }
 
   async create() {
+    this.add.image(400, 300, 'bgScore');
+
     this.add.text(300, 100, 'RANK  SCORE   NAME').setTint(0xff00ff);
     this.score = await api.getScore();
 

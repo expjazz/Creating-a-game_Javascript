@@ -1,19 +1,7 @@
 import GameScene from '../src/Scenes/GameScene';
-// import BootScene from './Scenes/BootScene';
-// import PreloaderScene from './Scenes/PreloaderScene';
-// import TitleScene from './Scenes/TitleScene';
-// import OptionsScene from './Scenes/OptionsScene';
-// import CreditsScene from './Scenes/CreditsScene';
-// import IntroductionScene from './Scenes/IntroductionScene';
-// import MidDialogue from './Scenes/MidDialogue';
-// import GameOver from './Scenes/GameOver';
 import back from '../src/Scenes/background';
 import MidDialogue from '../src/Scenes/MidDialogue';
-// import saveUserRecord from './Scenes/saveUserRecord';
-// import HighScoreScene from './Scenes/HighScoreScene';
 import lines from '../src/Scenes/dialogues';
-// import FreePlay from './Scenes/FreePlay';
-// import Audio from './models/music';
 
 
 const { dialogues } = lines;

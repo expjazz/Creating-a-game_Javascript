@@ -83,16 +83,17 @@ export default class GameScene extends Phaser.Scene {
       this[back].setOrigin(0, 0);
       this[back].setScrollFactor(0);
     });
-
-    this.time.addEvent({
-      delay: this.seconds,
-      callback() {
-        this.scene.pause();
-        clearInterval(this.idInterval);
-        this.scene.start(this.nextScene);
-      },
-      callbackScope: this,
-    });
+    if (!prop.gameProperty.freePlay) {
+      this.time.addEvent({
+        delay: this.seconds,
+        callback() {
+          this.scene.pause();
+          clearInterval(this.idInterval);
+          this.scene.start(this.nextScene);
+        },
+        callbackScope: this,
+      });
+    }
     this.anims.create({
       key: 'run',
       frames: this.anims.generateFrameNumbers('player', {
@@ -217,11 +218,12 @@ export default class GameScene extends Phaser.Scene {
 
     this.dying = false;
 
-    // countter for level
-    this.timeText = this.add.text(550, 16, 'Good Luck!', {
-      fontSize: '32px',
-      fill: '#000',
-    });
+    if (!prop.gameProperty.freePlay) {
+      this.timeText = this.add.text(550, 16, 'Good Luck!', {
+        fontSize: '32px',
+        fill: '#000',
+      });
+    }
 
     this.idInterval = setInterval(() => {
       const time = this.setMinutes(this.seconds);
@@ -262,7 +264,6 @@ export default class GameScene extends Phaser.Scene {
       coin.disableBody(true, true);
     });
 
-    // dying if iit  thouchess the spider
 
     this.physics.add.overlap(this.player, this.spiderGroup, (player, spider) => {
       this.dying = true;
@@ -300,7 +301,6 @@ export default class GameScene extends Phaser.Scene {
         this.platformGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
         this.platformPool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
       }
-      // platform.tileScaleX = 1 / platform.scaleX;
     } else {
       platform = this.add.tileSprite(posX, posY, platformWidth, 32, this.platformShape);
       this.physics.add.existing(platform);

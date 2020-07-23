@@ -1,5 +1,6 @@
 import 'phaser';
 import Button from '../components/Button';
+import prop from '../Config/gameProperties';
 
 export default class FreePlay extends Phaser.Scene {
   constructor() {
@@ -8,6 +9,7 @@ export default class FreePlay extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, 'restBG');
+    prop.gameProperty.freePlay = true;
 
     const phaseOneBtn = new Button('First', 1, 'One', this, true);
     phaseOneBtn.create();

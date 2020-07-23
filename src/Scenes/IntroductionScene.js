@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import config from '../Config/config';
+import prop from '../Config/gameProperties';
 
 export default class IntroductionScene extends Phaser.Scene {
   constructor() {
@@ -7,6 +7,7 @@ export default class IntroductionScene extends Phaser.Scene {
   }
 
   create() {
+    prop.gameProperty.freePlay = false;
     this.cameras.main.setBackgroundColor('#000111');
     this.introText = this.add.text(0, 0, 'Introduction', { fontSize: '32px', fill: '#fff' });
     // eslint-disable-next-line quotes

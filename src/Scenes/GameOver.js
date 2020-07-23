@@ -22,11 +22,8 @@ export default class GameOver extends Phaser.Scene {
     this.optionsButton = new Button('Save score', 1, 'rexUI', this);
     this.optionsButton.create();
 
-    this.restartButton = new Button('Restart game', 0, 'Introduction', this);
-    this.restartButton.create();
 
-
-    this.menuButton = new Button('Main Menu', -1, 'Title', this);
+    this.menuButton = new Button('Main Menu', 0, 'Title', this);
     this.menuButton.create();
   }
 }

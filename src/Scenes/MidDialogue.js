@@ -13,7 +13,6 @@ export default class MidDialogue extends Phaser.Scene {
   }
 
   preload() {
-    console.log('b');
     this.load.scenePlugin({
       key: 'rexuiplugin',
       url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
@@ -103,6 +102,7 @@ export default class MidDialogue extends Phaser.Scene {
   }
 
   SetAlertDialog(dialog, title, content) {
+    this.dialogs = dialog;
     if (title === undefined) {
       title = '';
     }
@@ -139,6 +139,4 @@ export default class MidDialogue extends Phaser.Scene {
         return Promise.resolve();
       });
   }
-
-  update() { }
 }

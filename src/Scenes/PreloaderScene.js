@@ -97,7 +97,7 @@ export default class PreloaderScene extends Phaser.Scene {
       frameHeight: 70,
     });
 
-
+    this.load.image('bgScore', 'assets/bgScore.jpg');
     this.load.spritesheet('player', 'assets/dude.png', {
       frameWidth: 32,
       frameHeight: 48,

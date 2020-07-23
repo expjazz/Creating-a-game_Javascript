@@ -36,9 +36,7 @@ export default class saveUserRecord extends Phaser.Scene {
         this.plugins.get('rextexteditplugin').edit(printText);
         keyObj.on('down', () => {
           if (this.count === 0) {
-            console.log('is down');
             this.count = 1;
-            console.log(printText._text);
             api.postScore(printText._text, prop.gameProperty.score);
             this.scene.start('HighScore');
           }

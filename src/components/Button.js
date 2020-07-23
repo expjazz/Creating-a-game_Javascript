@@ -1,8 +1,11 @@
+/* eslint-disable no-undef */
 import config from '../Config/config';
 import prop from '../Config/gameProperties';
+import 'phaser';
 
 export default class Button {
-  constructor(content, position, startScene, actualScene, freePlay = false, scoreCondition = false, dead = false) {
+  constructor(content, position, startScene,
+    actualScene, freePlay = false, scoreCondition = false, dead = false) {
     this.content = content;
     this.position = position;
     this.startScene = startScene;
@@ -17,14 +20,13 @@ export default class Button {
     this.centerButton(button, this.position);
     const text = this.actualScene.add.text(0, 0, this.content, { fontSize: '22px', fill: '#fff' });
     this.centerButtonText(text, button);
-    button.on('pointerdown', (pointer) => {
+    button.on('pointerdown', () => {
       if (this.scoreCondition) {
         prop.gameProperty.score = prop.gameProperty.lastScore;
       }
       if (this.freePlay) {
         prop.gameProperty.freePlay = true;
         prop.gameProperty.tripleJump = 3;
-      } else {
       }
       this.actualScene.scene.start(this.startScene);
     });
@@ -41,10 +43,12 @@ export default class Button {
   centerButton(gameObject, offset = 0) {
     Phaser.Display.Align.In.Center(
       gameObject,
-      this.actualScene.add.zone(config.width / 2, config.height / 2 - offset * 100, config.width, config.height),
+      this.actualScene.add
+        .zone(config.width / 2, config.height / 2 - offset * 100, config.width, config.height),
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this
   centerButtonText(gameText, gameButton) {
     Phaser.Display.Align.In.Center(
       gameText,

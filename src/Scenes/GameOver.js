@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import 'phaser';
-import prop from '../Config/gameProperties';
 import Button from '../components/Button';
 
 

@@ -47,11 +47,6 @@ export default class GameScene extends Phaser.Scene {
     };
   }
 
-  preload() {
-
-
-  }
-
   create() {
     this.tempTripleJump = prop.gameProperty.tripleJump;
     this.music = this.sys.game.globals.model;
@@ -244,7 +239,7 @@ export default class GameScene extends Phaser.Scene {
       }
     }, null, this);
 
-    this.physics.add.overlap(this.player, this.fireGroup, (player, fire) => {
+    this.physics.add.overlap(this.player, this.fireGroup, () => {
       this.dying = true;
       this.player.anims.stop();
       this.physics.pause();
@@ -265,7 +260,7 @@ export default class GameScene extends Phaser.Scene {
     });
 
 
-    this.physics.add.overlap(this.player, this.spiderGroup, (player, spider) => {
+    this.physics.add.overlap(this.player, this.spiderGroup, (player) => {
       this.dying = true;
       this.sound.play('lost');
       prop.gameProperty.tripleJump = this.tempTripleJump;
@@ -293,25 +288,29 @@ export default class GameScene extends Phaser.Scene {
       platform.active = true;
       platform.visible = true;
       this.platformPool.remove(platform);
-      const newRatio = platformWidth / platform.displayWidth;
       platform.displayWidth = platformWidth;
 
       if (increaseSpeed) {
         platform.body.setVelocityX(this.speedIncrease * -1);
-        this.platformGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-        this.platformPool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+        this.platformGroup.children.entries
+          .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+        this.platformPool.children.entries
+          .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
       }
     } else {
       platform = this.add.tileSprite(posX, posY, platformWidth, 32, this.platformShape);
       this.physics.add.existing(platform);
       platform.body.setImmovable(true);
       platform.body.setVelocityX(this.speedIncrease * -1);
-      this.platformGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-      this.platformPool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+      this.platformGroup.children.entries
+        .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+      this.platformPool.children.entries
+        .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
       platform.setDepth(2);
       this.platformGroup.add(platform);
     }
-    this.nextPlatformDistance = Phaser.Math.Between(this.gameOptions.spawnRange[0], this.gameOptions.spawnRange[1]);
+    this.nextPlatformDistance = Phaser.Math
+      .Between(this.gameOptions.spawnRange[0], this.gameOptions.spawnRange[1]);
 
     if (this.addedPlatforms > 1) {
       if (Phaser.Math.Between(1, 100) <= this.gameOptions.coinPercent) {
@@ -322,8 +321,10 @@ export default class GameScene extends Phaser.Scene {
           coin.alpha = 1;
           coin.active = true;
           coin.visible = true;
-          this.coinGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-          this.coinPool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.coinGroup.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.coinPool.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
           coin.setVelocityX(this.speedIncrease * -1);
 
           this.coinPool.remove(coin);
@@ -331,8 +332,10 @@ export default class GameScene extends Phaser.Scene {
           const coin = this.physics.add.sprite((posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth)), posY - 96, 'coin');
           coin.setImmovable(true);
           coin.setVelocityX(this.speedIncrease * -1);
-          this.coinGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-          this.coinPool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.coinGroup.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.coinPool.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
           coin.anims.play('rotate');
 
           coin.setDepth(2);
@@ -343,21 +346,28 @@ export default class GameScene extends Phaser.Scene {
       if (this.enemy !== 'fire' && Phaser.Math.Between(1, 100) <= this.gameOptions.spiderPercent) {
         if (this.spiderPool.getLength()) {
           const spider = this.spiderPool.getFirst();
-          spider.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth - platformWidth / 4);
+          spider.x = posX - platformWidth / 2 + Phaser.Math
+            .Between(1, platformWidth - platformWidth / 4);
           spider.y = posY - 33;
           spider.alpha = 1;
-          this.spiderGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-          this.spiderPool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.spiderGroup.children.entries.forEach((plat) => plat.body
+            .setVelocityX(this.speedIncrease * -1));
+          this.spiderPool.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
           spider.active = true;
           spider.setVelocityX(this.speedIncrease * -1);
 
           spider.visible = true;
           this.spiderPool.remove(spider);
         } else {
-          const spider = this.physics.add.sprite((posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth - platformWidth / 2)), posY - 31, this.enemy);
+          const spider = this.physics.add
+            .sprite((posX - platformWidth / 2 + Phaser.Math
+              .Between(1, platformWidth - platformWidth / 2)), posY - 31, this.enemy);
           if (this.enemy === 'spider') spider.setScale(0.1);
-          this.spiderGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-          this.spiderPool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.spiderGroup.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.spiderPool.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
           spider.setImmovable(true);
           if (this.enemy === 'rat') spider.anims.play('ratA');
 
@@ -378,8 +388,10 @@ export default class GameScene extends Phaser.Scene {
           fire.active = true;
           fire.setVelocityX(this.speedIncrease * -1);
 
-          this.fireGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-          this.firePool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.fireGroup.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.firePool.children.entries.forEach((plat) => plat.body
+            .setVelocityX(this.speedIncrease * -1));
           fire.visible = true;
           this.firePool.remove(fire);
         } else {
@@ -388,8 +400,10 @@ export default class GameScene extends Phaser.Scene {
           fire.setVelocityX(this.speedIncrease * -1);
           fire.setSize(8, 2, true);
           fire.anims.play('burn');
-          this.fireGroup.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
-          this.firePool.children.entries.forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.fireGroup.children.entries
+            .forEach((plat) => plat.body.setVelocityX(this.speedIncrease * -1));
+          this.firePool.children.entries.forEach((plat) => plat.body
+            .setVelocityX(this.speedIncrease * -1));
           fire.setDepth(2);
           this.fireGroup.add(fire);
         }
@@ -405,21 +419,25 @@ export default class GameScene extends Phaser.Scene {
   }
 
   jump() {
-    if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps) || (prop.gameProperty.tripleJump > 0 && this.playerJumps < 4))) {
-      if (this.player.body.touching.down) {
-        this.playerJumps = 0;
-        this.sound.play('jump');
-      }
-      this.player.setVelocityY(this.gameOptions.jumpForce * -1);
-      this.playerJumps += 1;
-      if (this.playerJumps > 2) {
-        prop.gameProperty.tripleJump -= 1;
-        this.jumpText.text = `Triple Jumps missing: ${prop.gameProperty.tripleJump}`;
-      }
+    if ((!this.dying)) {
+      // eslint-disable-next-line max-len
+      if (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < this.gameOptions.jumps) || (prop.gameProperty.tripleJump > 0 && this.playerJumps < 4)) {
+        if (this.player.body.touching.down) {
+          this.playerJumps = 0;
+          this.sound.play('jump');
+        }
+        this.player.setVelocityY(this.gameOptions.jumpForce * -1);
+        this.playerJumps += 1;
+        if (this.playerJumps > 2) {
+          prop.gameProperty.tripleJump -= 1;
+          this.jumpText.text = `Triple Jumps missing: ${prop.gameProperty.tripleJump}`;
+        }
 
-      this.player.anims.stop();
+        this.player.anims.stop();
+      }
     }
   }
+
 
   update() {
     if (this.seconds === 0) clearInterval(this.idInterval);
@@ -474,7 +492,7 @@ export default class GameScene extends Phaser.Scene {
 
 
     if (this.enemy === 'fire') {
-      this.fireGroup.getChildren().forEach(function (fire) {
+      this.fireGroup.getChildren().forEach((fire) => {
         if (fire.x < -fire.displayWidth / 2) {
           this.fireGroup.killAndHide(fire);
           this.fireGroup.remove(fire);
@@ -488,13 +506,18 @@ export default class GameScene extends Phaser.Scene {
       this.speedIncrease += 10;
     }
     if (minDistance > this.nextPlatformDistance) {
-      const nextPlatformWidth = Phaser.Math.Between(this.gameOptions.platformSizeRange[0], this.gameOptions.platformSizeRange[1]);
-      const platformRandomHeight = this.gameOptions.platformHeighScale * Phaser.Math.Between(this.gameOptions.platformHeightRange[0], this.gameOptions.platformHeightRange[1]);
+      const nextPlatformWidth = Phaser.Math
+        .Between(this.gameOptions.platformSizeRange[0], this.gameOptions.platformSizeRange[1]);
+      const platformRandomHeight = this.gameOptions
+        .platformHeighScale * Phaser.Math
+        .Between(this.gameOptions.platformHeightRange[0], this.gameOptions.platformHeightRange[1]);
       const nextPlatformGap = rightmostPlatformHeight + platformRandomHeight;
       const minPlatformHeight = 600 * this.gameOptions.platformVerticalLimit[0];
       const maxPlatformHeight = 600 * this.gameOptions.platformVerticalLimit[1];
-      const nextPlatformHeight = Phaser.Math.Clamp(nextPlatformGap, minPlatformHeight, maxPlatformHeight);
-      this.addPlatform(nextPlatformWidth, 800 + nextPlatformWidth / 2, nextPlatformHeight, this.speedIncrease);
+      const nextPlatformHeight = Phaser.Math
+        .Clamp(nextPlatformGap, minPlatformHeight, maxPlatformHeight);
+      this.addPlatform(nextPlatformWidth, 800 + nextPlatformWidth / 2,
+        nextPlatformHeight, this.speedIncrease);
     }
   }
 }

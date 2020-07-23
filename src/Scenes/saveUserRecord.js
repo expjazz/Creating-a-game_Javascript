@@ -2,6 +2,7 @@ import 'phaser';
 import api from '../Config/apiHandler';
 import prop from '../Config/gameProperties';
 
+// eslint-disable-next-line no-undef
 export default class saveUserRecord extends Phaser.Scene {
   constructor() {
     super({

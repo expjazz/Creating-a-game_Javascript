@@ -22,11 +22,8 @@ export default class MidDialogue extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, 'restBG');
-    console.log(this.nextScene);
     prop.gameProperty.tripleJump = this.jumpBonus;
-    console.log(this.jumpBonus);
     const selfScene = this;
-    console.log(selfScene);
     this.Alert(selfScene, this.title, this.content)
       .then(() => this.scene.start(this.nextScene));
   }
@@ -93,10 +90,10 @@ export default class MidDialogue extends Phaser.Scene {
         content: false, // Content is a pure text object
       },
     })
-      .on('button.over', (button, groupName, index, pointer, event) => {
+      .on('button.over', (button) => {
         button.getElement('background').setStrokeStyle(1, 0xffffff);
       })
-      .on('button.out', (button, groupName, index, pointer, event) => {
+      .on('button.out', (button) => {
         button.getElement('background').setStrokeStyle();
       });
 

@@ -1,12 +1,10 @@
 import 'phaser';
 import api from '../Config/apiHandler';
+import Button from '../components/Button';
 
 export default class HighscoreScene extends Phaser.Scene {
   constructor() {
     super({ key: 'HighScore' });
-  }
-
-  preload() {
   }
 
   async create() {
@@ -20,9 +18,13 @@ export default class HighscoreScene extends Phaser.Scene {
     this.sortedScore = this.score.result.sort((a, b) => (a.score > b.score ? -1 : 1));
     this.sortedScore.forEach((result) => {
       this.count += 1;
-      const st = this.count === 1 ? 'ST' : 'ND';
-      this.add.text(300, this.position, `${this.count}${st} ${result.score} ${result.user}`).setTint(0xff0000);
-      this.position += 25;
+      if (this.count < 15) {
+        const st = this.count === 1 ? 'ST' : 'ND';
+        this.add.text(300, this.position, `${this.count}${st} ${result.score} ${result.user}`).setTint(0xff0000);
+        this.position += 25;
+      }
     });
+    this.menuButton = new Button('Main Menu', -2.5, 'Title', this);
+    this.menuButton.create();
   }
 }

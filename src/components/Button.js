@@ -25,7 +25,6 @@ export default class Button {
         prop.gameProperty.freePlay = true;
         prop.gameProperty.tripleJump = 3;
       } else {
-        prop.gameProperty.freePlay = false;
       }
       this.actualScene.scene.start(this.startScene);
     });

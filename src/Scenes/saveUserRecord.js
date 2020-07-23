@@ -20,14 +20,14 @@ export default class saveUserRecord extends Phaser.Scene {
   }
 
   create() {
+    this.add.image(400, 300, 'bgScore');
+
     const keyObj = this.input.keyboard.addKey('Enter');
     const printText = this.add.rexBBCodeText(400, 300, 'abc', {
       color: 'yellow',
       fontSize: '24px',
       fixedWidth: 200,
-      // fixedHeight: 80,
       backgroundColor: '#333333',
-      // valign: 'center'
     })
       .setOrigin(0.5)
       .setInteractive()
@@ -37,14 +37,13 @@ export default class saveUserRecord extends Phaser.Scene {
         keyObj.on('down', () => {
           if (this.count === 0) {
             this.count = 1;
+            // eslint-disable-next-line no-underscore-dangle
             api.postScore(printText._text, prop.gameProperty.score);
-            this.scene.start('HighScore');
+            this.scene.start('Title');
           }
         });
       }, this);
 
     this.add.text(0, 580, 'Click text to start editing, press enter key to stop editing');
   }
-
-  update() { }
 }

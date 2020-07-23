@@ -258,7 +258,7 @@ export default class GameScene extends Phaser.Scene {
     }, null, this);
 
     this.physics.add.overlap(this.player, this.coinGroup, (player, coin) => {
-      prop.gameProperty.score += 10;
+      prop.gameProperty.score += 20;
       this.scoreText.text = `score: ${prop.gameProperty.score}`;
       this.sound.play('collectCoin');
       coin.disableBody(true, true);

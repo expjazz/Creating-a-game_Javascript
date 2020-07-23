@@ -227,10 +227,10 @@ export default class GameScene extends Phaser.Scene {
 
     this.idInterval = setInterval(() => {
       const time = this.setMinutes(this.seconds);
-      this.timeText.text = time;
+      if (!prop.gameProperty.freePlay) this.timeText.text = time;
       this.count += 1000;
-      if (this.count !== 0 && this.count % 3 === 0) {
-        prop.gameProperty.score += 3;
+      if (this.count !== 0 && this.count % 2 === 0) {
+        prop.gameProperty.score += 5;
         this.scoreText.text = `score: ${prop.gameProperty.score}`;
       }
 

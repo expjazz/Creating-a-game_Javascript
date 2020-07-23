@@ -22,9 +22,11 @@ export default class MidDialogue extends Phaser.Scene {
 
   create() {
     this.add.image(400, 300, 'restBG');
-
+    console.log(this.nextScene);
     prop.gameProperty.tripleJump = this.jumpBonus;
+    console.log(this.jumpBonus);
     const selfScene = this;
+    console.log(selfScene);
     this.Alert(selfScene, this.title, this.content)
       .then(() => this.scene.start(this.nextScene));
   }
@@ -121,9 +123,7 @@ export default class MidDialogue extends Phaser.Scene {
     if (y === undefined) {
       y = 300;
     }
-    if (!this.AlertDialog) {
-      this.AlertDialog = this.CreateAlertDialog(scene);
-    }
+    this.AlertDialog = this.CreateAlertDialog(scene);
     this.SetAlertDialog(this.AlertDialog, title, content);
     this.AlertDialog
       .setPosition(x, y)

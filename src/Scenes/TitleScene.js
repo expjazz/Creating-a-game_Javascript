@@ -1,5 +1,5 @@
 import 'phaser';
-import config from '../Config/config';
+import prop from '../Config/gameProperties';
 import Button from '../components/Button';
 
 export default class TitleScene extends Phaser.Scene {
@@ -8,41 +8,22 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    // Game
+    prop.gameProperty.score = 0;
+    prop.gameProperty.lastScore = 0;
     this.add.image(400, 300, 'titleBG');
 
     this.gameButton = new Button('History', 2, 'Introduction', this);
     this.gameButton.create();
-    // this.gameButton = this.add.sprite(100, 200, 'blueButton1').setInteractive();
-    // this.centerButton(this.gameButton, 1);
 
-    // this.gameText = this.add.text(0, 0, 'Play', { fontSize: '32px', fill: '#fff' });
-    // this.centerButtonText(this.gameText, this.gameButton);
-
-    // this.gameButton.on('pointerdown', (pointer) => {
-    //   this.scene.start('One');
-    // });
     this.freeGameButton = new Button('Free Play', 1, 'FreePlay', this);
     this.freeGameButton.create();
 
-    // Options
     this.optionsButton = new Button('Options', 0, 'Options', this);
     this.optionsButton.create();
-    // this.optionsButton = this.add.sprite(300, 200, 'blueButton1').setInteractive();
-    // this.centerButton(this.optionsButton);
 
-    // this.optionsText = this.add.text(0, 0, 'Options', { fontSize: '32px', fill: '#fff' });
-    // this.centerButtonText(this.optionsText, this.optionsButton);
-
-    // this.optionsButton.on('pointerdown', (pointer) => {
-    //   this.scene.start('Options');
-    // });
-
-    // Credits
     this.creditsButton = new Button('Credits', -1, 'Credits', this);
     this.creditsButton.create();
 
-    // Hiigh scores
     this.highScoreButton = new Button('Leaders', -2, 'HighScore', this);
     this.highScoreButton.create();
 

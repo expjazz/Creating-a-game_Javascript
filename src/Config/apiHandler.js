@@ -4,7 +4,6 @@ const apiHandlerPostFirst = async () => {
   const res = await axios.post('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/', {
     name: 'Saving Pets',
   });
-  console.log(res);
   return res;
 };
 

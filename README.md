@@ -2,10 +2,11 @@
 
 This is a game in which you need to survive without falling off the platforms and skipping enemies. You have both a history mode (with 3 different phases that increases the difficulty) and a free mode (in which you can choose whatever phase you want.
 
-
 ### How to Play it
 
 You need to jump from one platform to another. To jump, either press space, or click with the left button in your mouse. Your score increases with time, and every coin is worth 20 points.
+
+- Check the [GDD](./gdd.md)
 
 ### Screenshots
 
@@ -23,8 +24,7 @@ You need to jump from one platform to another. To jump, either press space, or c
 
 ##### Phase Three
 
-- ![Main page](./screenshotPhaseThree.png)
-
+- ![Main page](./screenshotPhasethree.png)
 
 ### FEATURES
 
@@ -39,7 +39,7 @@ Two differents modes for playing. Function for saving and displaying the high sc
 
 ### LIVE VERSION
 
-- [GitHack](https://raw.githack.com/expjazz/weather_app/featureV1/dist/index.html)
+- [GitHack](https://savepets.netlify.app/)
 
 ### Getting Started
 

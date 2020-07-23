@@ -9,8 +9,15 @@ export default class CreditsScene extends Phaser.Scene {
   create() {
     this.add.image(400, 300, 'bgScore');
 
-    this.creditsText = this.add.text(0, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
-    this.madeByText = this.add.text(0, 0, 'Created By: Placeholder', { fontSize: '26px', fill: '#fff' });
+    this.creditsText = this.add.text(400, 0, 'Credits', { fontSize: '32px', fill: '#fff' });
+    // eslint-disable-next-line quotes
+    this.madeByText = this.add.text(400, 0, `Created By: Expedito Andrade  \n Assets Providers: 
+    \n- The Cynic Project / cynicmusic.com / pixelsphere.org
+    \n- Joth 
+    \n- Iwan qubodup Gabovitch 
+    \n- Tamara Ramsay 
+    \n- Marta Nowaczyk
+    \n- Luis Zuno (@ansimuz)`, { fontSize: '26px', fill: '#fff', align: 'center' });
     this.zone = this.add.zone(config.width / 2, config.height / 2, config.width, config.height);
 
     Phaser.Display.Align.In.Center(
@@ -40,7 +47,7 @@ export default class CreditsScene extends Phaser.Scene {
       targets: this.madeByText,
       y: -300,
       ease: 'Power1',
-      duration: 8000,
+      duration: 15000,
       delay: 1000,
       onComplete: function () {
         this.madeByTween.destroy;

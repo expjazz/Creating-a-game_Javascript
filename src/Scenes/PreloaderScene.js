@@ -13,7 +13,7 @@ export default class PreloaderScene extends Phaser.Scene {
   preload() {
     // add logo image
 
-    this.add.image(400, 200, 'logo');
+    this.add.image(400, 200, 'bgScore');
 
     // display progress bar
     const progressBar = this.add.graphics();
@@ -63,12 +63,10 @@ export default class PreloaderScene extends Phaser.Scene {
       progressBar.fillRect(250, 280, 300 * value, 30);
     });
 
-    // update file progress text
     this.load.on('fileprogress', (file) => {
       assetText.setText(`Loading asset: ${file.key}`);
     });
 
-    // remove progress bar when complete
     this.load.on('complete', () => {
       progressBar.destroy();
       progressBox.destroy();
@@ -80,7 +78,6 @@ export default class PreloaderScene extends Phaser.Scene {
 
     this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
 
-    // load assets needed in our game
     this.load.image('platform', '../assets/platform.png');
     this.load.image('platformTwo', '../assets/platform2.png');
     this.load.image('platformThree', '../assets/platform3.png');

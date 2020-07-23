@@ -32,9 +32,9 @@ class Game extends Phaser.Game {
 
     this.scene.add('Introduction', IntroductionScene);
     this.scene.add('FreePlay', FreePlay);
-    this.scene.add('One', new GameScene('One', back.background[0], 'rat', 'DialogueOne', 350, 30000, 'one', 'platform', 3.2));
-    this.scene.add('PhaseTwo', new GameScene('PhaseTwo', back.background[1], 'spider', 'DialogueTwo', 300, 120000, 'two', 'platformTwo'));
-    this.scene.add('PhaseThree', new GameScene('PhaseThree', back.background[2], 'fire', 'DialogueThree', 400, 90000, 'three', 'platformThree'));
+    this.scene.add('One', new GameScene('One', back.background[0], 'rat', 'DialogueOne', 350, 60000, 'one', 'platform', 3.2));
+    this.scene.add('PhaseTwo', new GameScene('PhaseTwo', back.background[1], 'spider', 'DialogueTwo', 300, 90000, 'two', 'platformTwo'));
+    this.scene.add('PhaseThree', new GameScene('PhaseThree', back.background[2], 'fire', 'DialogueThree', 400, 75000, 'three', 'platformThree'));
     this.scene.add('DialogueIntro', new MidDialogue('DialogueIntro', lines.dialogues[0][0], lines.dialogues[0][1], 0, 'One'));
     this.scene.add('HighScore', HighScoreScene);
     this.scene.add('DialogueOne', new MidDialogue('DialogueOne', lines.dialogues[1][0], lines.dialogues[1][1], 3, 'PhaseTwo'));
